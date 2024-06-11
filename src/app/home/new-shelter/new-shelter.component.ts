@@ -50,7 +50,7 @@ export class NewShelterComponent {
           complement: this.form.value.complement,
           city: this.form.value.city,
           state: this.form.value.state,
-          zipcode: this.form.value.zipcode
+          zipCode: this.form.value.zipcode
         }
       };
       this.provider.post(obj).subscribe((resp: Shelter) => {

@@ -15,12 +15,24 @@ import {MatInput} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle
+} from "@angular/material/card";
+import { ShelterComponent } from './home/shelter/shelter.component';
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NewShelterComponent
+    NewShelterComponent,
+    ShelterComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +50,16 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
     MatDialogActions,
     MatInput,
     MatGridList,
-    MatGridTile
+    MatGridTile,
+    MatCard,
+    MatCardHeader,
+    MatCardActions,
+    MatCardContent,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatTabGroup,
+    MatTab,
+    MatProgressSpinner
   ],
   providers: [],
   bootstrap: [AppComponent]

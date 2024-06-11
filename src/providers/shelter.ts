@@ -9,14 +9,7 @@ export class ShelterProvider {
   constructor(private http: HttpClient) { }
 
   get() {
-    return this.http.get<any>('http://localhost:8080/shelter').subscribe(resp => {
-      console.log(resp)
-      let shelter;
-      if (resp) {
-        shelter = new Shelter(resp.id, resp.name, resp.address, resp.items);
-      }
-      return shelter;
-    });
+    return this.http.get<any>('http://localhost:8080/shelter');
   }
 
   post(shelter: any) {
