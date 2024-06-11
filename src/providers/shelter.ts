@@ -19,9 +19,7 @@ export class ShelterProvider {
     });
   }
 
-  post(shelter: Shelter) {
-    return this.http.post<Shelter>('http://localhost:8080/shelter', shelter).subscribe(resp => {
-      return new Shelter(resp.id, resp.name, resp.address, resp.items);
-    });
+  post(shelter: any) {
+    return this.http.post<any>('http://localhost:8080/shelter', shelter);
   }
 }

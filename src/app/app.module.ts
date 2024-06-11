@@ -14,6 +14,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {MatInput} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,9 @@ import {NoopAnimationsModule} from "@angular/platform-browser/animations";
     MatLabel,
     MatProgressBar,
     MatDialogActions,
-    MatInput
+    MatInput,
+    MatGridList,
+    MatGridTile
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -68,6 +68,9 @@
       <div class="col"></div>
     </div>
   </form>
+  <div *ngIf="erro" class="alert alert-danger" role="alert">
+    Fill in all fields!
+  </div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 </div>
 <div mat-dialog-actions>
