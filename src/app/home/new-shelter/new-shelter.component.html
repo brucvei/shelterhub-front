@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>New Shelter</h2>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="row">
+      <!--    <div class="col">-->
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <!--    </div>-->
+    </div>
+    <div class="row">
+      <p style="font-size: 18px">
+        <i class="fas fa-home"></i>
+        Address
+      </p>
+      <hr>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Street</mat-label>
+          <input matInput formControlName="street">
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Number</mat-label>
+          <input matInput formControlName="number">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Complement</mat-label>
+          <input matInput formControlName="complement">
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>District</mat-label>
+          <input matInput formControlName="district">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city">
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>State</mat-label>
+          <input matInput formControlName="state">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Zip code</mat-label>
+          <input matInput formControlName="zipcode">
+        </mat-form-field>
+      </div>
+      <div class="col"></div>
+    </div>
+  </form>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button mat-button mat-raised-button style="background: limegreen; color: white;" (click)="onYesClick()">Create
+  </button>
+</div>
