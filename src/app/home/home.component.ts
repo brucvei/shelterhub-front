@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   enterShelter(shelter: any) {
-    let snackBarRef = this.snackBar.open('Redirecionando...');
+    let snackBarRef = this.snackBar.open('Redirecionando...',  "",{duration: 3000});
     localStorage.setItem('shelterId', shelter.id.toString());
     this.router.navigate(['/shelter', shelter.id], {state: {shelter: shelter}});
   }
@@ -124,7 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   newShelter() {
     const dialogRef = this.dialog.open(NewShelterComponent);
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Abrigo cadastrado com sucesso!');
+      let snackBarRef = this.snackBar.open('Abrigo cadastrado com sucesso!',  "",{duration: 3000});
       this.getShelters();
     });
   }
@@ -137,7 +137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Item cadastrado com sucesso!');
+      let snackBarRef = this.snackBar.open('Item cadastrado com sucesso!',  "",{duration: 3000});
       this.getItens();
     });
   }
@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Unidade de medida cadastrada com sucesso!');
+      let snackBarRef = this.snackBar.open('Unidade de medida cadastrada com sucesso!',  "",{duration: 3000});
       this.getShelters();
     });
   }
@@ -161,7 +161,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Categoria cadastrada com sucesso!');
+      let snackBarRef = this.snackBar.open('Categoria cadastrada com sucesso!',  "",{duration: 3000});
       this.getShelters();
     });
   }
@@ -174,7 +174,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Abrigo editado com sucesso!');
+      let snackBarRef = this.snackBar.open('Abrigo editado com sucesso!',  "",{duration: 3000});
       this.getShelters();
     });
   }
@@ -189,7 +189,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Item editado com sucesso!');
+      let snackBarRef = this.snackBar.open('Item editado com sucesso!',  "",{duration: 3000});
       this.getItens();
     });
   }
@@ -204,7 +204,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Categoria editada com sucesso!');
+      let snackBarRef = this.snackBar.open('Categoria editada com sucesso!',  "",{duration: 3000});
       this.getShelters();
     });
   }
@@ -218,7 +218,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Unidade de medida editada com sucesso!');
+      let snackBarRef = this.snackBar.open('Unidade de medida editada com sucesso!',  "",{duration: 3000});
       this.getShelters();
     });
   }
@@ -226,7 +226,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   deleteShelter(id: string) {
     this.loading = true;
     this.shelterProvider.delete(id).subscribe(resp => {
-      let snackBarRef = this.snackBar.open('Abrigo removido com sucesso!');
+      let snackBarRef = this.snackBar.open('Abrigo removido com sucesso!',  "",{duration: 3000});
       this.getShelters();
       this.loading = false;
     });
@@ -235,7 +235,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   deleteItem(id: string) {
     this.loading = true;
     this.itemProvider.delete(id).subscribe(resp => {
-      let snackBarRef = this.snackBar.open('Item removido com sucesso!');
+      let snackBarRef = this.snackBar.open('Item removido com sucesso!',  "",{duration: 3000});
       this.getItens();
       this.loading = false;
     });
@@ -244,7 +244,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   deleteCategory(id: string) {
     this.loading = true;
     this.categoryProvider.delete(id).subscribe(resp => {
-      let snackBarRef = this.snackBar.open('Categoria removida com sucesso!');
+      let snackBarRef = this.snackBar.open('Categoria removida com sucesso!',  "",{duration: 3000});
       this.getCategory();
       this.loading = false;
     });
@@ -253,7 +253,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   deleteUnit(id: string) {
     this.loading = true;
     this.measurementProvider.delete(id).subscribe(resp => {
-      let snackBarRef = this.snackBar.open('Unidade de medida removida com sucesso!');
+      let snackBarRef = this.snackBar.open('Unidade de medida removida com sucesso!',  "",{duration: 3000});
       this.getMeasurementUnit();
       this.loading = false;
     });
