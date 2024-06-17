@@ -34,26 +34,26 @@
             </div>
 
             <div *ngIf="!loading">
-              <div class="row" *ngIf="!itens" style="display: flex; justify-content: center">
+              <div class="row" *ngIf="!shelterItens" style="display: flex; justify-content: center">
                 <div class="alert alert-secondary" role="alert">
                   Este abrigo ainda não possui itens cadastrados.
                 </div>
               </div>
-              <div *ngIf="itens">
-                <mat-table [dataSource]="itens" class="secondary">
+              <div *ngIf="shelterItens">
+                <mat-table [dataSource]="shelterItens" class="secondary">
                   <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.item.name }}</mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="category">
                     <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.category ? row.category.name : "" }}</mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.item.category ? row.item.category.name : "" }}</mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="unit">
                     <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.measurementUnit ? row.measurementUnit.name : "" }}
+                    <mat-cell *matCellDef="let row"> {{ row.item.measurementUnit ? row.item.measurementUnit.name : "" }}
                     </mat-cell>
                   </ng-container>
 
@@ -61,45 +61,23 @@
                     <mat-header-cell *matHeaderCellDef> Quantidade</mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.quantity }}</mat-cell>
                   </ng-container>
-
-                  <!--                <ng-container matColumnDef="actions">-->
-                  <!--                  <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>-->
-                  <!--                  <mat-cell *matCellDef="let row">-->
-                  <!--                    <div style="display: flex; flex-flow: row; justify-content: space-between">-->
-                  <!--                      <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">-->
-                  <!--                        <i class="fa-solid fa-pen-to-square"></i>-->
-                  <!--                      </button>-->
-                  <!--                      <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">-->
-                  <!--                        <i class="fa-solid fa-trash-can"></i>-->
-                  <!--                      </button>-->
-                  <!--                    </div>-->
-                  <!--                  </mat-cell>-->
-                  <!--                </ng-container>-->
-
+                  
                   <ng-container matColumnDef="mobile">
                     <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <div style="padding: 15px 0;">
-                        <h6>{{ row.name }}</h6>
+                        <h6>{{ row.item.name }}</h6>
                         <p>
                           <i class="fa-solid fa-rectangle-list me-3"></i>
-                          {{ row.category ? row.category.name : "" }}</p>
+                          {{ row.item.category ? row.item.category.name : "" }}</p>
                         <p>
                           <i class="fa-solid fa-ruler me-3"></i>
-                          {{ row.measurementUnit ? row.measurementUnit.name : "" }}
+                          {{ row.item.measurementUnit ? row.item.measurementUnit.name : "" }}
                         </p>
                         <p>
                           <i class="fa-solid fa-boxes-stacked me-3"></i>
                           {{ row.quantity }}
                         </p>
-                        <!--                      <div>-->
-                        <!--                        <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">-->
-                        <!--                          <i class="fa-solid fa-pen-to-square"></i>-->
-                        <!--                        </button>-->
-                        <!--                        <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">-->
-                        <!--                          <i class="fa-solid fa-trash-can"></i>-->
-                        <!--                        </button>-->
-                        <!--                      </div>-->
                       </div>
                     </mat-cell>
                   </ng-container>

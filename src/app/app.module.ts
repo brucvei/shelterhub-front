@@ -44,6 +44,8 @@ import {
 } from "@angular/material/expansion";
 import {MatOption, MatSelect} from "@angular/material/select";
 import { NewCategoryUnitComponent } from './home/new-category-unit/new-category-unit.component';
+import { NewItemShelterComponent } from './home/new-item-shelter/new-item-shelter.component';
+import { NewTransactionComponent } from './home/new-transaction/new-transaction.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { NewCategoryUnitComponent } from './home/new-category-unit/new-category-
     NewShelterComponent,
     ShelterComponent,
     NewItemComponent,
-    NewCategoryUnitComponent
+    NewCategoryUnitComponent,
+    NewItemShelterComponent,
+    NewTransactionComponent
   ],
   imports: [
     BrowserModule,

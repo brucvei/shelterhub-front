@@ -1,28 +1,19 @@
-<h2 mat-dialog-title>Novo item</h2>
+<h2 mat-dialog-title>Novo item do abrigo</h2>
 <div mat-dialog-content>
   <form [formGroup]="form">
     <div class="row">
-      <mat-form-field class="example-full-width">
-        <mat-label>Nome</mat-label>
-        <input matInput formControlName="name">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
       <div class="col-md">
-        <mat-form-field style="width: 100%">
-          <mat-label>Categoria</mat-label>
-          <mat-select formControlName="category">
-            <mat-option *ngFor="let categoria of categories" value="{{categoria.id}}">{{ categoria.name }}</mat-option>
+        <mat-form-field class="example-full-width">
+          <mat-label>Item</mat-label>
+          <mat-select formControlName="item">
+               <mat-option *ngFor="let item of all" value="{{item.id}}">{{ item.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="col-md">
         <mat-form-field style="width: 100%">
-          <mat-label>Unidade de medida</mat-label>
-          <mat-select formControlName="unit">
-            <mat-option *ngFor="let unidade of measurementUnits" value="{{unidade.id}}">{{ unidade.name }}</mat-option>
-          </mat-select>
+          <mat-label>Quantidade</mat-label>
+          <input matInput formControlName="quantity">
         </mat-form-field>
       </div>
     </div>
