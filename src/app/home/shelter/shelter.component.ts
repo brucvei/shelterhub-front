@@ -4,13 +4,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 @Component({
   selector: 'app-shelter',
   templateUrl: './shelter.component.html',
-  styleUrls: ['./shelter.component.css']
+  styleUrls: ['./shelter.component.scss']
 })
 export class ShelterComponent {
   shelterId: string;
   shelter = history.state.shelter;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  itens: any[] = [];
+  transactions: any[] = [];
+
+  constructor(private route: ActivatedRoute, public router: Router) {
     if (!this.shelter) {
       this.router.navigate(['/home']);
     }

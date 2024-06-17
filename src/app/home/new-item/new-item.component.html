@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Novo item</h2>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="category">
+            <mat-option *ngFor="let categoria of categories" value="{{categoria.id}}">{{ categoria.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Unidade de medida</mat-label>
+          <mat-select formControlName="unit">
+            <mat-option *ngFor="let unidade of measurementUnits" value="{{unidade.id}}">{{ unidade.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="erro" class="alert alert-danger" role="alert">
+    Preencha todos os campos!
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button mat-raised-button style="background: limegreen; color: white;" (click)="onYesClick()">
+    <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+    Criar
+  </button>
+</div>

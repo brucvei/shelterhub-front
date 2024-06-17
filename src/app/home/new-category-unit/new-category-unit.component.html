@@ -1,0 +1,23 @@
+<h2 mat-dialog-title *ngIf="category">Nova categoria</h2>
+<h2 mat-dialog-title *ngIf="unit">Nova unidade de medida</h2>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </div>
+  </form>
+  <div *ngIf="erro" class="alert alert-danger" role="alert">
+    Preencha todos os campos!
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button mat-raised-button style="background: limegreen; color: white;" (click)="onYesClick()">
+    <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+    Criar
+  </button>
+</div>

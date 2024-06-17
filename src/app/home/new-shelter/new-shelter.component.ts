@@ -7,18 +7,17 @@ import {Shelter} from "../../../models/Shelter";
 @Component({
   selector: 'app-new-shelter',
   templateUrl: './new-shelter.component.html',
-  styleUrl: './new-shelter.component.css'
+  styleUrl: './new-shelter.component.scss'
 })
 export class NewShelterComponent {
 
   public form: any;
   public loading: boolean = false;
+  public sending: boolean = false;
   public erro: boolean = false;
 
-  constructor(
-    public dialogRef: MatDialogRef<NewShelterComponent>,
-    public provider: ShelterProvider
-  ) {
+  constructor(public dialogRef: MatDialogRef<NewShelterComponent>,
+              public provider: ShelterProvider) {
     this.loading = true;
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -39,6 +38,8 @@ export class NewShelterComponent {
 
   onYesClick() {
     if (this.form.valid) {
+      this.sending = true;
+      this.loading = true;
       this.erro = false;
       console.log(this.form.value);
       let obj = {
@@ -56,7 +57,11 @@ export class NewShelterComponent {
       this.provider.post(obj).subscribe((resp: Shelter) => {
         console.log(resp)
         this.dialogRef.close();
+        this.sending = false;
+        this.loading = false;
       }, error => {
+        this.sending = false;
+        this.loading = false;
         console.error('There was an error during the request', error);
       });
     } else {

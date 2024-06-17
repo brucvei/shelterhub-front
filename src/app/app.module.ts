@@ -26,13 +26,33 @@ import {
 import { ShelterComponent } from './home/shelter/shelter.component';
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
+import { NewItemComponent } from './home/new-item/new-item.component';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelDescription, MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from "@angular/material/expansion";
+import {MatOption, MatSelect} from "@angular/material/select";
+import { NewCategoryUnitComponent } from './home/new-category-unit/new-category-unit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NewShelterComponent,
-    ShelterComponent
+    ShelterComponent,
+    NewItemComponent,
+    NewCategoryUnitComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +79,24 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatCardSubtitle,
     MatTabGroup,
     MatTab,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCell,
+    MatCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatHeaderRow,
+    MatRow,
+    MatHeaderRowDef,
+    MatRowDef,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
+    MatAccordion,
+    MatSelect,
+    MatOption
   ],
   providers: [],
   bootstrap: [AppComponent]

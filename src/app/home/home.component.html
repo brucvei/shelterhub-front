@@ -1,30 +1,29 @@
 <div class="container">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h4 class="h4">
-      <i class="fas fa-home"></i>
-      Shelters
+      <i class="fa-solid fa-tents"></i>
+      Abrigos
     </h4>
     <div class="btn-toolbar mb-2 mb-md-0">
-      <button mat-button mat-raised-button color="primary" (click)="newShelter()">
+      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newShelter()">
         <i class="fas fa-circle-plus"></i>
-        New
+        Novo
       </button>
     </div>
   </div>
 
-  <div *ngIf="loading">
+  <div *ngIf="loading" style="display: flex; justify-content: center">
     <mat-spinner></mat-spinner>
   </div>
   <div *ngIf="!loading">
-    <div class="row" *ngIf="!data">
-      <!--    mostrar qnd n tiver nenhum abrigo cadastrado-->
+    <div class="row" *ngIf="shelters.length == 0" style="display: flex; justify-content: center">
       <div class="alert alert-secondary" role="alert">
-        No shelters found.
+        Abrigos não encontrados.
       </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4" *ngIf="data">
-      <div class="col" *ngFor="let shelter of data">
-        <mat-card style="color: white">
+    <div class="row row-cols-1 row-cols-md-3 g-4" *ngIf="shelters">
+      <div class="col" *ngFor="let shelter of shelters">
+        <mat-card class="primary">
           <mat-card-header>
             <mat-card-title>{{ shelter.name }}</mat-card-title>
             <mat-card-subtitle>{{ shelter.id }}</mat-card-subtitle>
@@ -37,11 +36,171 @@
             {{ shelter.address.zipCode }}
           </mat-card-content>
           <mat-card-actions align="end">
-            <button mat-button (click)="enterShelter(shelter)">Edit</button>
+            <button mat-button (click)="enterShelter(shelter)">
+              <i class="fas fa-sign-in"></i>
+              Acessar
+            </button>
           </mat-card-actions>
         </mat-card>
       </div>
     </div>
   </div>
 
+  <br>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h4 class="h4">
+      <i class="fa-solid fa-sitemap"></i>
+      Itens
+    </h4>
+  </div>
+
+  <mat-accordion>
+    <mat-expansion-panel class="primary">
+      <mat-expansion-panel-header>
+        <mat-panel-title><i class="fa-solid fa-boxes-stacked me-3"></i> Itens</mat-panel-title>
+      </mat-expansion-panel-header>
+      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newItem()">
+        <i class="fas fa-circle-plus"></i>
+        Novo
+      </button>
+      <br>
+
+      <div *ngIf="loading" style="display: flex; justify-content: center">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div *ngIf="!loading">
+        <div class="row m-4" *ngIf="!itens" style="display: flex; justify-content: center">
+          <div class="alert alert-secondary" role="alert">
+            Itens não encontrados.
+          </div>
+        </div>
+        <br>
+
+        <div *ngIf="itens">
+          <mat-table [dataSource]="itens" class="secondary">
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+              <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ row.category.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="unit">
+              <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ row.measurementUnit.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
+              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+              <mat-header-cell *matHeaderCellDef> AAAAAAA</mat-header-cell>
+              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumns"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="primary">
+      <mat-expansion-panel-header>
+        <mat-panel-title><i class="fa-solid fa-rectangle-list me-3"></i> Categorias</mat-panel-title>
+      </mat-expansion-panel-header>
+      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newCategory()">
+        <i class="fas fa-circle-plus"></i>
+        Novo
+      </button>
+      <br>
+
+      <div *ngIf="loading" style="display: flex; justify-content: center">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div *ngIf="!loading">
+        <div class="row m-4" *ngIf="!categories" style="display: flex; justify-content: center">
+          <div class="alert alert-secondary" role="alert">
+            Categorias não encontradas.
+          </div>
+        </div>
+        <br>
+
+        <div *ngIf="categories">
+          <mat-table [dataSource]="categories" class="secondary">
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
+              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+              <mat-header-cell *matHeaderCellDef> AAAAAAA</mat-header-cell>
+              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumns2"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="primary">
+      <mat-expansion-panel-header>
+        <mat-panel-title><i class="fa-solid fa-ruler me-3"></i> Unidades de medidas</mat-panel-title>
+      </mat-expansion-panel-header>
+      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newUnit()">
+        <i class="fas fa-circle-plus"></i>
+        Novo
+      </button>
+      <br>
+
+      <div *ngIf="loading" style="display: flex; justify-content: center">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div *ngIf="!loading">
+        <div class="row m-4" *ngIf="!measurementUnits" style="display: flex; justify-content: center">
+          <div class="alert alert-secondary" role="alert">
+            Unidades de medidas não encontradas.
+          </div>
+        </div>
+        <br>
+
+        <div *ngIf="measurementUnits">
+          <mat-table [dataSource]="measurementUnits" class="secondary">
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
+              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+              <mat-header-cell *matHeaderCellDef> AAAAAAA</mat-header-cell>
+              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumns2"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <br>
+  <br>
 </div>

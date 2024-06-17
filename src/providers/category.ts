@@ -4,9 +4,9 @@ import {HttpClient} from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class ShelterProvider {
+export class CategoryProvider {
 
-  url = 'https://delicate-cass-vitoriapizzutti-e8c0ca48.koyeb.app/shelter';
+  url = 'https://delicate-cass-vitoriapizzutti-e8c0ca48.koyeb.app/category';
 
   constructor(private http: HttpClient) { }
 
