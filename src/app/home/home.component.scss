@@ -3,7 +3,9 @@ mat-card {
   /*min-height: 180px;*/
 }
 
-mat-row > mat-cell:nth-last-child(1),
-mat-header-row > mat-header-cell:nth-last-child(1){
-  flex: 0 0 100px;
+@media screen and (min-width: 601px) {
+  mat-row > mat-cell:nth-last-child(1),
+  mat-header-row > mat-header-cell:nth-last-child(1) {
+    flex: 0 0 120px;
+  }
 }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NewShelterComponent } from './home/new-shelter/new-shelter.component';
 import {MatToolbar} from "@angular/material/toolbar";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatMiniFabButton} from "@angular/material/button";
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -96,7 +96,8 @@ import { NewCategoryUnitComponent } from './home/new-category-unit/new-category-
     MatExpansionPanelDescription,
     MatAccordion,
     MatSelect,
-    MatOption
+    MatOption,
+    MatMiniFabButton
   ],
   providers: [],
   bootstrap: [AppComponent]

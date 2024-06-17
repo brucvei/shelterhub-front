@@ -10,6 +10,7 @@ import {MeasurementUnitProvider} from "../../providers/measurement-unit";
 import {NewItemComponent} from "./new-item/new-item.component";
 import {fromEvent, Subject, takeUntil} from "rxjs";
 import {NewCategoryUnitComponent} from "./new-category-unit/new-category-unit.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-home',
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private categoryProvider: CategoryProvider,
               private measurementProvider: MeasurementUnitProvider,
               private router: Router,
+              readonly snackBar: MatSnackBar,
               public dialog: MatDialog) {
     this.getShelters();
     this.getItens();
@@ -67,6 +69,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  isMobileDevice(): boolean {
+    const userAgent = navigator.userAgent;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   }
 
   getShelters() {
@@ -109,6 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   enterShelter(shelter: any) {
+    let snackBarRef = this.snackBar.open('Redirecionando...');
     localStorage.setItem('shelterId', shelter.id.toString());
     this.router.navigate(['/shelter', shelter.id], {state: {shelter: shelter}});
   }
@@ -116,6 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   newShelter() {
     const dialogRef = this.dialog.open(NewShelterComponent);
     dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Abrigo cadastrado com sucesso!');
       this.getShelters();
     });
   }
@@ -128,13 +137,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Item cadastrado com sucesso!');
       this.getItens();
     });
-  }
-
-  isMobileDevice(): boolean {
-    const userAgent = navigator.userAgent;
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   }
 
   newUnit() {
@@ -144,6 +149,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Unidade de medida cadastrada com sucesso!');
       this.getShelters();
     });
   }
@@ -155,7 +161,101 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Categoria cadastrada com sucesso!');
       this.getShelters();
+    });
+  }
+
+  editShelter(shelter: Shelter) {
+    const dialogRef = this.dialog.open(NewShelterComponent, {
+      data: {
+        edit: true,
+        obj: shelter
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Abrigo editado com sucesso!');
+      this.getShelters();
+    });
+  }
+
+  editItem(row: any) {
+    const dialogRef = this.dialog.open(NewItemComponent, {
+      data: {
+        categories: this.categories,
+        measurementUnits: this.measurementUnits,
+        edit: true,
+        obj: row
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Item editado com sucesso!');
+      this.getItens();
+    });
+  }
+
+
+  editCategory(row: any) {
+    const dialogRef = this.dialog.open(NewCategoryUnitComponent, {
+      data: {
+        category: true,
+        edit: true,
+        obj: row
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Categoria editada com sucesso!');
+      this.getShelters();
+    });
+  }
+
+  editUnit(row: any) {
+    const dialogRef = this.dialog.open(NewCategoryUnitComponent, {
+      data: {
+        unit: true,
+        edit: true,
+        obj: row
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let snackBarRef = this.snackBar.open('Unidade de medida editada com sucesso!');
+      this.getShelters();
+    });
+  }
+
+  deleteShelter(id: string) {
+    this.loading = true;
+    this.shelterProvider.delete(id).subscribe(resp => {
+      let snackBarRef = this.snackBar.open('Abrigo removido com sucesso!');
+      this.getShelters();
+      this.loading = false;
+    });
+  }
+
+  deleteItem(id: string) {
+    this.loading = true;
+    this.itemProvider.delete(id).subscribe(resp => {
+      let snackBarRef = this.snackBar.open('Item removido com sucesso!');
+      this.getItens();
+      this.loading = false;
+    });
+  }
+
+  deleteCategory(id: string) {
+    this.loading = true;
+    this.categoryProvider.delete(id).subscribe(resp => {
+      let snackBarRef = this.snackBar.open('Categoria removida com sucesso!');
+      this.getCategory();
+      this.loading = false;
+    });
+  }
+
+  deleteUnit(id: string) {
+    this.loading = true;
+    this.measurementProvider.delete(id).subscribe(resp => {
+      let snackBarRef = this.snackBar.open('Unidade de medida removida com sucesso!');
+      this.getMeasurementUnit();
+      this.loading = false;
     });
   }
 }

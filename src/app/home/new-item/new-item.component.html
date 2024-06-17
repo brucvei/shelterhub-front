@@ -9,16 +9,16 @@
     </div>
 
     <div class="row">
-      <div class="col">
-        <mat-form-field class="example-full-width">
+      <div class="col-md">
+        <mat-form-field style="width: 100%">
           <mat-label>Categoria</mat-label>
           <mat-select formControlName="category">
             <mat-option *ngFor="let categoria of categories" value="{{categoria.id}}">{{ categoria.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col">
-        <mat-form-field class="example-full-width">
+      <div class="col-md">
+        <mat-form-field style="width: 100%">
           <mat-label>Unidade de medida</mat-label>
           <mat-select formControlName="unit">
             <mat-option *ngFor="let unidade of measurementUnits" value="{{unidade.id}}">{{ unidade.name }}</mat-option>
@@ -34,8 +34,12 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button mat-raised-button style="background: limegreen; color: white;" (click)="onYesClick()">
+  <button mat-button mat-raised-button *ngIf="!edit" style="background: limegreen; color: white;" (click)="post()">
     <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
     Criar
+  </button>
+  <button mat-button mat-raised-button *ngIf="edit" style="background: rebeccapurple; color: white;" (click)="put()">
+    <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+    Editar
   </button>
 </div>

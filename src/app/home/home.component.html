@@ -36,10 +36,15 @@
             {{ shelter.address.zipCode }}
           </mat-card-content>
           <mat-card-actions align="end">
-            <button mat-button (click)="enterShelter(shelter)">
-              <i class="fas fa-sign-in"></i>
-              Acessar
-            </button>
+              <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="enterShelter(shelter)">
+                <i class="fas fa-sign-in"></i>
+              </button>
+              <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editShelter(shelter)">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button mat-mini-fab class="danger" style="margin-right: 5px;" (click)="deleteShelter(shelter.id.toString())">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -85,22 +90,45 @@
 
             <ng-container matColumnDef="category">
               <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.category.name }}</mat-cell>
+              <mat-cell *matCellDef="let row"> {{ row.category ? row.category.name : "" }}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="unit">
               <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.measurementUnit.name }}</mat-cell>
+              <mat-cell *matCellDef="let row"> {{ row.measurementUnit ? row.measurementUnit.name : "" }}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="actions">
               <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
-              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+              <mat-cell *matCellDef="let row">
+                <div style="display: flex; flex-flow: row; justify-content: space-between">
+                  <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef> AAAAAAA</mat-header-cell>
-              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+              <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <div style="padding: 15px 0;">
+                  <h6>{{ row.name }}</h6>
+                  <p><i class="fa-solid fa-rectangle-list me-3"></i> {{ row.category ? row.category.name : "" }}</p>
+                  <p><i class="fa-solid fa-ruler me-3"></i> {{ row.measurementUnit ? row.measurementUnit.name : "" }}</p>
+                  <div>
+                    <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
@@ -140,12 +168,33 @@
 
             <ng-container matColumnDef="actions">
               <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
-              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+              <mat-cell *matCellDef="let row">
+                <div style="display: flex; flex-flow: row; justify-content: space-between">
+                  <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editCategory(row)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button mat-mini-fab class="danger" (click)="deleteCategory(row.id)">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef> AAAAAAA</mat-header-cell>
-              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+              <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <div style="padding: 15px 0;">
+                  <h6>{{ row.name }}</h6>
+                  <div>
+                    <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editCategory(row)">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button mat-mini-fab class="danger" (click)="deleteCategory(row.id)">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>
@@ -185,12 +234,33 @@
 
             <ng-container matColumnDef="actions">
               <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
-              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+              <mat-cell *matCellDef="let row">
+                <div style="display: flex; flex-flow: row; justify-content: space-between">
+                  <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editUnit(row)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button mat-mini-fab class="danger" (click)="deleteUnit(row.id)">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef> AAAAAAA</mat-header-cell>
-              <mat-cell *matCellDef="let row"> AAAAAA</mat-cell>
+              <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <div style="padding: 15px 0;">
+                  <h6>{{ row.name }}</h6>
+                  <div>
+                    <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editUnit(row)">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button mat-mini-fab class="danger" (click)="deleteUnit(row.id)">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>

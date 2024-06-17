@@ -19,19 +19,28 @@ export class NewCategoryUnitComponent {
   public category = false;
   public unit = false;
 
+  edit: boolean = false;
+  obj: any = null;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<NewCategoryUnitComponent>,
               private categoryProvider: CategoryProvider,
               private measurementProvider: MeasurementUnitProvider,) {
+    this.edit = !!data.obj;
+    this.obj = data.obj;
     this.category = !!data.category;
     this.unit = !!data.unit;
     this.loading = true;
+
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required]),
     });
-    this.loading = false;
 
-    console.log(data)
+    if (this.edit) {
+      this.form.get('name').setValue(this.obj.name);
+    }
+
+    this.loading = false;
   }
 
   onNoClick(): void {
