@@ -1,13 +1,13 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {fromEvent, Subject, takeUntil} from "rxjs";
 import {ItemShelterProvider} from "../../../providers/item-shelter";
 import {TransactionsProvider} from "../../../providers/transactions";
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { NewItemShelterComponent } from '../new-item-shelter/new-item-shelter.component';
-import { ItemProvider } from '../../../providers/item';
-import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {NewItemShelterComponent} from './new-item-shelter/new-item-shelter.component';
+import {ItemProvider} from '../../../providers/item';
+import {NewTransactionComponent} from './new-transaction/new-transaction.component';
 
 @Component({
   selector: 'app-shelter',
@@ -26,8 +26,14 @@ export class ShelterComponent implements OnInit, OnDestroy {
   shelterItens: any[] = [];
   transactions: any[] = [];
 
+  str: any = {
+    "INPUT": "Entrada",
+    "OUTPUT": "Saída",
+  }
+
+
   columns = ['name', 'category', 'unit', 'quantity'];
-  columns2 = ['name', 'actions'];
+  columns2 = ['action', 'date', 'item', 'quantity'];
 
   displayColumns = this.columns;
   displayColumns2 = this.columns2;
@@ -83,7 +89,6 @@ export class ShelterComponent implements OnInit, OnDestroy {
   getItens() {
     this.loading = true;
     this.itemProvider.get().subscribe(resp => {
-      console.log(resp);
       this.itens = resp;
       this.loading = false;
     });
@@ -91,8 +96,7 @@ export class ShelterComponent implements OnInit, OnDestroy {
 
   getShelterItens() {
     this.loading = true;
-    this.itemShelterProvider.get().subscribe(resp => {
-      console.log(resp);
+    this.itemShelterProvider.get(this.shelterId).subscribe(resp => {
       this.shelterItens = resp;
       this.loading = false;
     });
@@ -100,8 +104,7 @@ export class ShelterComponent implements OnInit, OnDestroy {
 
   getTransactions() {
     this.loading = true;
-    this.transactionProvider.get().subscribe(resp => {
-      console.log(resp);
+    this.transactionProvider.get(this.shelterId).subscribe(resp => {
       this.transactions = resp;
       this.loading = false;
     });
@@ -115,8 +118,10 @@ export class ShelterComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Item associado ao abrigo com sucesso!',  "",{duration: 3000});
-      this.getShelterItens();
+      if (result === 'ok') {
+        let snackBarRef = this.snackBar.open('Item associado ao abrigo com sucesso!', "", {duration: 3000});
+        this.getShelterItens();
+      }
     });
   }
 
@@ -128,8 +133,24 @@ export class ShelterComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Transação feita com sucesso!',  "",{duration: 3000});
-      this.getTransactions();
+      if (result === 'ok') {
+        let snackBarRef = this.snackBar.open('Transação feita com sucesso!', "", {duration: 3000});
+        this.getTransactions();
+      }
     });
+  }
+
+  protected readonly length = length;
+
+  formateDate(str: string) {
+      const date = new Date(str);
+
+      const day = ("0" + date.getDate()).slice(-2);
+      const month = ("0" + (date.getMonth() + 1)).slice(-2);
+      const year = date.getFullYear().toString().slice(-2);
+      const hours = ("0" + date.getHours()).slice(-2);
+      const minutes = ("0" + date.getMinutes()).slice(-2);
+
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
 }

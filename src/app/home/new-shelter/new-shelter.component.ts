@@ -32,7 +32,7 @@ export class NewShelterComponent {
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required]),
       street: new FormControl('', [Validators.required]),
-      number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+      number: new FormControl('', [Validators.required]),
       district: new FormControl('', [Validators.required]),
       complement: new FormControl(''),
       city: new FormControl('', [Validators.required]),
@@ -63,7 +63,6 @@ export class NewShelterComponent {
       this.sending = true;
       this.loading = true;
       this.erro = false;
-      console.log(this.form.value);
       let obj = {
         name: this.form.value.name,
         address: {
@@ -77,8 +76,7 @@ export class NewShelterComponent {
         }
       };
       this.provider.post(obj).subscribe((resp: Shelter) => {
-        console.log(resp)
-        this.dialogRef.close();
+        this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;
       }, error => {
@@ -96,7 +94,6 @@ export class NewShelterComponent {
       this.sending = true;
       this.loading = true;
       this.erro = false;
-      console.log(this.form.value);
       let obj = {
         id: this.obj.id,
         name: this.form.value.name,
@@ -111,8 +108,7 @@ export class NewShelterComponent {
         }
       };
       this.provider.put(obj).subscribe((resp: Shelter) => {
-        console.log(resp)
-        this.dialogRef.close();
+        this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;
       }, error => {

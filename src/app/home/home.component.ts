@@ -20,7 +20,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class HomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  loading = false;
+  loadingShelter = false;
+  loadingItens = false;
+  loadingCategories = false;
+  loadingUnits = false;
   shelters: Shelter[] = [];
   itens: any[] = [];
   categories: any[] = [];
@@ -77,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getShelters() {
-    this.loading = true;
+    this.loadingShelter = true;
     this.shelterProvider.get().subscribe(resp => {
       let shelter: Shelter[] = [];
       if (resp) {
@@ -86,32 +89,32 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       }
       this.shelters = shelter;
-      this.loading = false;
+      this.loadingShelter = false;
     });
   }
 
   getItens() {
-    this.loading = true;
+    this.loadingItens = true;
     this.itemProvider.get().subscribe(resp => {
       this.itens = resp;
-      this.loading = false;
+      this.loadingItens = false;
     });
   }
 
 
   getCategory() {
-    this.loading = true;
+    this.loadingCategories = true;
     this.categoryProvider.get().subscribe(resp => {
       this.categories = resp;
-      this.loading = false;
+      this.loadingCategories = false;
     });
   }
 
   getMeasurementUnit() {
-    this.loading = true;
+    this.loadingUnits = true;
     this.measurementProvider.get().subscribe(resp => {
       this.measurementUnits = resp;
-      this.loading = false;
+      this.loadingUnits = false;
     });
   }
 
@@ -124,8 +127,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   newShelter() {
     const dialogRef = this.dialog.open(NewShelterComponent);
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Abrigo cadastrado com sucesso!',  "",{duration: 3000});
-      this.getShelters();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Abrigo cadastrado com sucesso!',  "",{duration: 3000});
+        this.getShelters();
+      }
     });
   }
 
@@ -137,8 +142,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Item cadastrado com sucesso!',  "",{duration: 3000});
-      this.getItens();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Item cadastrado com sucesso!',  "",{duration: 3000});
+        this.getItens();
+      }
     });
   }
 
@@ -149,8 +156,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Unidade de medida cadastrada com sucesso!',  "",{duration: 3000});
-      this.getShelters();
+      if (result === 'ok') {
+        let snackBarRef = this.snackBar.open('Unidade de medida cadastrada com sucesso!', "", {duration: 3000});
+        this.getMeasurementUnit();
+      }
     });
   }
 
@@ -161,8 +170,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Categoria cadastrada com sucesso!',  "",{duration: 3000});
-      this.getShelters();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Categoria cadastrada com sucesso!',  "",{duration: 3000});
+        this.getShelters();
+      }
     });
   }
 
@@ -174,8 +185,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Abrigo editado com sucesso!',  "",{duration: 3000});
-      this.getShelters();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Abrigo editado com sucesso!',  "",{duration: 3000});
+        this.getShelters();
+      }
     });
   }
 
@@ -189,8 +202,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Item editado com sucesso!',  "",{duration: 3000});
-      this.getItens();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Item editado com sucesso!',  "",{duration: 3000});
+        this.getItens();
+      }
     });
   }
 
@@ -204,8 +219,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Categoria editada com sucesso!',  "",{duration: 3000});
-      this.getShelters();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Categoria editada com sucesso!',  "",{duration: 3000});
+        this.getShelters();
+      }
     });
   }
 
@@ -218,44 +235,46 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      let snackBarRef = this.snackBar.open('Unidade de medida editada com sucesso!',  "",{duration: 3000});
-      this.getShelters();
+      if (result === 'ok'){
+        let snackBarRef = this.snackBar.open('Unidade de medida editada com sucesso!',  "",{duration: 3000});
+        this.getShelters();
+      }
     });
   }
 
   deleteShelter(id: string) {
-    this.loading = true;
+    this.loadingShelter = true;
     this.shelterProvider.delete(id).subscribe(resp => {
       let snackBarRef = this.snackBar.open('Abrigo removido com sucesso!',  "",{duration: 3000});
       this.getShelters();
-      this.loading = false;
+      this.loadingShelter = false;
     });
   }
 
   deleteItem(id: string) {
-    this.loading = true;
+    this.loadingItens = true;
     this.itemProvider.delete(id).subscribe(resp => {
       let snackBarRef = this.snackBar.open('Item removido com sucesso!',  "",{duration: 3000});
       this.getItens();
-      this.loading = false;
+      this.loadingItens = false;
     });
   }
 
   deleteCategory(id: string) {
-    this.loading = true;
+    this.loadingCategories = true;
     this.categoryProvider.delete(id).subscribe(resp => {
       let snackBarRef = this.snackBar.open('Categoria removida com sucesso!',  "",{duration: 3000});
       this.getCategory();
-      this.loading = false;
+      this.loadingCategories = false;
     });
   }
 
   deleteUnit(id: string) {
-    this.loading = true;
+    this.loadingUnits = true;
     this.measurementProvider.delete(id).subscribe(resp => {
       let snackBarRef = this.snackBar.open('Unidade de medida removida com sucesso!',  "",{duration: 3000});
       this.getMeasurementUnit();
-      this.loading = false;
+      this.loadingUnits = false;
     });
   }
 }

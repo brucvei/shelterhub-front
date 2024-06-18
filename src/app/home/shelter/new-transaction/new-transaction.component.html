@@ -6,7 +6,7 @@
         <mat-form-field class="example-full-width">
           <mat-label>Item</mat-label>
           <mat-select formControlName="item">
-               <mat-option *ngFor="let item of all" value="{{item}}">{{ item.item.name }}</mat-option>
+               <mat-option *ngFor="let item of all" [value]="item">{{ item.item.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

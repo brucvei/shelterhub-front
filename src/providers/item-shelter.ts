@@ -10,8 +10,8 @@ export class ItemShelterProvider {
 
   constructor(private http: HttpClient) { }
 
-  get() {
-    return this.http.get<any>(this.url);
+  get(id: string) {
+    return this.http.get<any>(this.url + '/shelter/' + id);
   }
 
   getById(id: string) {

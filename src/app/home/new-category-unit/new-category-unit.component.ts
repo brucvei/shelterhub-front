@@ -57,7 +57,7 @@ export class NewCategoryUnitComponent {
       };
       if (this.category) {
         this.categoryProvider.post(obj).subscribe((resp) => {
-          this.dialogRef.close();
+          this.dialogRef.close('ok');
           this.sending = false;
           this.loading = false;
         }, error => {
@@ -67,7 +67,7 @@ export class NewCategoryUnitComponent {
         });
       } else if (this.unit) {
         this.measurementProvider.post(obj).subscribe((resp) => {
-          this.dialogRef.close();
+          this.dialogRef.close('ok');
           this.sending = false;
           this.loading = false;
         }, error => {

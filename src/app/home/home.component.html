@@ -12,10 +12,10 @@
     </div>
   </div>
 
-  <div *ngIf="loading" style="display: flex; justify-content: center">
+  <div *ngIf="loadingShelter" style="display: flex; justify-content: center">
     <mat-spinner></mat-spinner>
   </div>
-  <div *ngIf="!loading">
+  <div *ngIf="!loadingShelter">
     <div class="row" *ngIf="shelters.length == 0" style="display: flex; justify-content: center">
       <div class="alert alert-secondary" role="alert">
         Abrigos não encontrados.
@@ -70,10 +70,10 @@
       </button>
       <br>
 
-      <div *ngIf="loading" style="display: flex; justify-content: center">
+      <div *ngIf="loadingItens" style="display: flex; justify-content: center">
         <mat-spinner></mat-spinner>
       </div>
-      <div *ngIf="!loading">
+      <div *ngIf="!loadingItens">
         <div class="row m-4" *ngIf="!itens" style="display: flex; justify-content: center">
           <div class="alert alert-secondary" role="alert">
             Itens não encontrados.
@@ -148,10 +148,10 @@
       </button>
       <br>
 
-      <div *ngIf="loading" style="display: flex; justify-content: center">
+      <div *ngIf="loadingCategories" style="display: flex; justify-content: center">
         <mat-spinner></mat-spinner>
       </div>
-      <div *ngIf="!loading">
+      <div *ngIf="!loadingCategories">
         <div class="row m-4" *ngIf="!categories" style="display: flex; justify-content: center">
           <div class="alert alert-secondary" role="alert">
             Categorias não encontradas.
@@ -214,10 +214,10 @@
       </button>
       <br>
 
-      <div *ngIf="loading" style="display: flex; justify-content: center">
+      <div *ngIf="loadingUnits" style="display: flex; justify-content: center">
         <mat-spinner></mat-spinner>
       </div>
-      <div *ngIf="!loading">
+      <div *ngIf="!loadingUnits">
         <div class="row m-4" *ngIf="!measurementUnits" style="display: flex; justify-content: center">
           <div class="alert alert-secondary" role="alert">
             Unidades de medidas não encontradas.

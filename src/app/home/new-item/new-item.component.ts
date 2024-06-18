@@ -61,7 +61,7 @@ export class NewItemComponent {
         measurementUnitId: this.form.value.unit,
       };
       this.provider.post(obj).subscribe((resp) => {
-        this.dialogRef.close();
+        this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;
       }, error => {
@@ -86,7 +86,7 @@ export class NewItemComponent {
         measurementUnitId: this.form.value.unit,
       };
       this.provider.put(obj).subscribe((resp) => {
-        this.dialogRef.close();
+        this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;
       }, error => {
