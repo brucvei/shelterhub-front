@@ -1,10 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ItemProvider} from "../../../providers/item";
 import {CategoryProvider} from "../../../providers/category";
 import {MeasurementUnitProvider} from "../../../providers/measurement-unit";
-import {Shelter} from "../../../models/Shelter";
 
 @Component({
   selector: 'app-new-category-unit',
@@ -56,24 +54,28 @@ export class NewCategoryUnitComponent {
         name: this.form.value.name,
       };
       if (this.category) {
-        this.categoryProvider.post(obj).subscribe((resp) => {
-          this.dialogRef.close('ok');
-          this.sending = false;
-          this.loading = false;
-        }, error => {
-          this.sending = false;
-          this.loading = false;
-          console.error('There was an error during the request', error);
+        this.categoryProvider.post(obj).subscribe({
+          next: () => {
+            this.dialogRef.close('ok');
+            this.sending = false;
+            this.loading = false;
+          }, error: (error) => {
+            this.sending = false;
+            this.loading = false;
+            console.error('There was an error during the request', error);
+          }
         });
       } else if (this.unit) {
-        this.measurementProvider.post(obj).subscribe((resp) => {
+        this.measurementProvider.post(obj).subscribe({
+          next: () => {
           this.dialogRef.close('ok');
           this.sending = false;
           this.loading = false;
-        }, error => {
-          this.sending = false;
-          this.loading = false;
-          console.error('There was an error during the request', error);
+        }, error: (error) => {
+            this.sending = false;
+            this.loading = false;
+            console.error('There was an error during the request', error);
+          }
         });
       }
     } else {

@@ -5,7 +5,7 @@
       {{ shelter.name }}
     </h4>
     <div class="btn-toolbar mb-2 mb-md-0">
-      <button mat-button mat-outline-button color="primary" (click)="router.navigate(['/'])">
+      <button mat-button color="primary" (click)="router.navigate(['/'])">
         <i class="fa-solid fa-tent-arrow-turn-left"></i>
         Voltar ao início
       </button>
@@ -40,51 +40,53 @@
                 </div>
               </div>
               <div *ngIf="shelterItens.length > 0">
-                <mat-table [dataSource]="shelterItens" class="secondary">
-                  <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.item.name }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="category">
-                    <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.item.category ? row.item.category.name : "" }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="unit">
-                    <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.item.measurementUnit ? row.item.measurementUnit.name : "" }}
-                    </mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="quantity">
-                    <mat-header-cell *matHeaderCellDef> Quantidade</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.quantity }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="mobile">
-                    <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      <div style="padding: 15px 0;">
-                        <h6>{{ row.item.name }}</h6>
-                        <p>
-                          <i class="fa-solid fa-rectangle-list me-3"></i>
-                          {{ row.item.category ? row.item.category.name : "" }}</p>
-                        <p>
-                          <i class="fa-solid fa-ruler me-3"></i>
-                          {{ row.item.measurementUnit ? row.item.measurementUnit.name : "" }}
-                        </p>
-                        <p>
-                          <i class="fa-solid fa-boxes-stacked me-3"></i>
-                          {{ row.quantity }}
-                        </p>
-                      </div>
-                    </mat-cell>
-                  </ng-container>
-
-                  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayColumns"></mat-row>
-                </mat-table>
+                <p-table [value]="shelterItens">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="item.name">
+                        Item
+                        <p-sortIcon field="item.name"/>
+                      </th>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="item.category.name">
+                        Categoria
+                        <p-sortIcon field="category.name"/>
+                      </th>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="item.measurementUnit.name">
+                        Unidade
+                        <p-sortIcon field="measurementUnit.name"/>
+                      </th>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="quantity">
+                        Quantidade
+                        <p-sortIcon field="quantity"/>
+                      </th>
+                      <th *ngIf="isMobileDevice()">Itens</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-row>
+                    <tr>
+                      <td *ngIf="!isMobileDevice()">{{ row.item.name }}</td>
+                      <td *ngIf="!isMobileDevice()">{{ row.item.category.name }}</td>
+                      <td *ngIf="!isMobileDevice()">{{ row.item.measurementUnit.name }}</td>
+                      <td *ngIf="!isMobileDevice()">{{ row.quantity }}</td>
+                      <td *ngIf="isMobileDevice()">
+                        <div style="padding: 15px 0;">
+                          <h6>{{ row.item.name }}</h6>
+                          <p>
+                            <i class="fa-solid fa-rectangle-list me-3"></i>
+                            {{ row.item.category ? row.item.category.name : "" }}
+                          <p>
+                            <i class="fa-solid fa-ruler me-3"></i>
+                            {{ row.item.measurementUnit ? row.item.measurementUnit.name : "" }}
+                          </p>
+                          <p>
+                            <i class="fa-solid fa-boxes-stacked me-3"></i>
+                            {{ row.quantity }}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
               </div>
             </div>
           </div>
@@ -113,51 +115,53 @@
                 </div>
               </div>
               <div *ngIf="transactions.length > 0">
-                <mat-table [dataSource]="transactions" class="secondary">
-                  <!--                  'action', 'date', 'item', 'quantity'-->
-                  <ng-container matColumnDef="action">
-                    <mat-header-cell *matHeaderCellDef> Tipo</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ str[row.action] }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="date">
-                    <mat-header-cell *matHeaderCellDef> Data</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ formateDate(row.date) }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="item">
-                    <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.itemShelter.item.name }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="quantity">
-                    <mat-header-cell *matHeaderCellDef> Quantidade</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.quantity }}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="mobile">
-                    <mat-header-cell *matHeaderCellDef> Transação</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      <div style="padding: 15px 0;">
-                        <h6>{{ str[row.action] }}</h6>
-                        <p>
-                          <i class="fa-solid fa-calendar me-3"></i>
-                          {{ formateDate(row.date) }}</p>
-                        <p>
-                          <i class="fa-solid fa-boxes-stacked me-3"></i>
-                          {{ row.itemShelter.item.name }}
-                        </p>
-                        <p>
-                          <i class="fa-solid fa-hashtag me-3"></i>
-                          {{ row.quantity }}
-                        </p>
-                      </div>
-                    </mat-cell>
-                  </ng-container>
-
-                  <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayColumns2"></mat-row>
-                </mat-table>
+                <p-table [value]="transactions">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="action">
+                        Tipo
+                        <p-sortIcon field="action"/>
+                      </th>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="date">
+                        Data
+                        <p-sortIcon field="date"/>
+                      </th>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="itemShelter.item.name">
+                        Item
+                        <p-sortIcon field="row.itemShelter.item.name"/>
+                      </th>
+                      <th *ngIf="!isMobileDevice()" pSortableColumn="quantity">
+                        Quantidade
+                        <p-sortIcon field="quantity"/>
+                      </th>
+                      <th *ngIf="isMobileDevice()">Transações</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-row>
+                    <tr>
+                      <td *ngIf="!isMobileDevice()">{{ str[row.action] }}</td>
+                      <td *ngIf="!isMobileDevice()">{{ formateDate(row.date) }}</td>
+                      <td *ngIf="!isMobileDevice()">{{ row.itemShelter.item.name }}</td>
+                      <td *ngIf="!isMobileDevice()">{{ row.quantity }}</td>
+                      <td *ngIf="isMobileDevice()">
+                        <div style="padding: 15px 0;">
+                          <h6>{{ str[row.action] }}</h6>
+                          <p>
+                            <i class="fa-solid fa-calendar me-3"></i>
+                            {{ formateDate(row.date) }}
+                          <p>
+                            <i class="fa-solid fa-boxes-stacked me-3"></i>
+                            {{ row.itemShelter.item.name }}
+                          </p>
+                          <p>
+                            <i class="fa-solid fa-hashtag me-3"></i>
+                            {{ row.quantity }}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
               </div>
             </div>
           </div>

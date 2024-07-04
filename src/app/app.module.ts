@@ -6,13 +6,13 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NewShelterComponent } from './home/new-shelter/new-shelter.component';
 import {MatToolbar} from "@angular/material/toolbar";
-import {MatButton, MatMiniFabButton} from "@angular/material/button";
+import {MatButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {MatInput} from "@angular/material/input";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {
@@ -46,6 +46,23 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import { NewCategoryUnitComponent } from './home/new-category-unit/new-category-unit.component';
 import { NewItemShelterComponent } from './home/shelter/new-item-shelter/new-item-shelter.component';
 import { NewTransactionComponent } from './home/shelter/new-transaction/new-transaction.component';
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
+import { LoginComponent } from './pages/login/login.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import {ToolbarModule} from "primeng/toolbar";
+import {Button} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
+import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {TableModule} from "primeng/table";
+import {NgxMaskDirective, provideEnvironmentNgxMask} from "ngx-mask";
+import {JwtInterceptor} from "../interceptor/jwt";
+
+export function HttpLoaderFactory(http: HttpClient)  {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -56,7 +73,10 @@ import { NewTransactionComponent } from './home/shelter/new-transaction/new-tran
     NewItemComponent,
     NewCategoryUnitComponent,
     NewItemShelterComponent,
-    NewTransactionComponent
+    NewTransactionComponent,
+    LoginComponent,
+    AdminComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -101,9 +121,32 @@ import { NewTransactionComponent } from './home/shelter/new-transaction/new-tran
     MatAccordion,
     MatSelect,
     MatOption,
-    MatMiniFabButton
+    MatMiniFabButton,
+    MatSort,
+    MatPaginator,
+    ToolbarModule,
+    Button,
+    InputTextModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    TableModule,
+    NgxMaskDirective,
+    MatIconButton,
   ],
-  providers: [],
+  providers: [
+    provideEnvironmentNgxMask(),
+    TranslateService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

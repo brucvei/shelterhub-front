@@ -4,6 +4,12 @@
       <i class="fa-solid fa-person-shelter"></i>
       ShelterHub
     </span>
+    <span class="example-spacer"></span>
+    <div *ngIf="isLogged()">
+      <button mat-button color="primary" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
   </mat-toolbar>
   <div class="container-fluid">
     <section class="content">

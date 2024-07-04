@@ -6,7 +6,9 @@ import {HttpClient} from "@angular/common/http";
 })
 export class MeasurementUnitProvider {
 
-  url = 'https://delicate-cass-vitoriapizzutti-e8c0ca48.koyeb.app/measurement-unit';
+
+  url = 'http://localhost:8080/measurement-unit';
+  // url = 'https://shelterhub-api.koyeb.app/measurement-unit';
 
   constructor(private http: HttpClient) { }
 

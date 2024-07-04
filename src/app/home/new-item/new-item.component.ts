@@ -1,8 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ShelterProvider} from "../../../providers/shelter";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Shelter} from "../../../models/Shelter";
 import {ItemProvider} from "../../../providers/item";
 
 @Component({
@@ -39,8 +37,8 @@ export class NewItemComponent {
 
     if (this.edit) {
       this.form.get('name').setValue(this.obj.name);
-      this.form.get('category').setValue(this.obj.category ? this.obj.category.id : null);
-      this.form.get('unit').setValue(this.obj.measurementUnit ? this.obj.measurementUnit.id : null);
+      this.form.get('category').setValue(this.obj.category.id);
+      this.form.get('unit').setValue(this.obj.measurementUnit.id);
     }
 
     this.loading = false;
@@ -56,18 +54,20 @@ export class NewItemComponent {
       this.loading = true;
       this.erro = false;
       let obj = {
-        name: this.form.value.name,
-        categoryId: this.form.value.category,
-        measurementUnitId: this.form.value.unit,
+        name: this.form.get('name').value,
+        categoryId: this.form.get('category').value,
+        measurementUnitId: this.form.get('unit').value,
       };
-      this.provider.post(obj).subscribe((resp) => {
-        this.dialogRef.close('ok');
-        this.sending = false;
-        this.loading = false;
-      }, error => {
-        this.sending = false;
-        this.loading = false;
-        console.error('There was an error during the request', error);
+      this.provider.post(obj).subscribe({
+        next: () => {
+          this.dialogRef.close('ok');
+          this.sending = false;
+          this.loading = false;
+        }, error: (error) => {
+          this.sending = false;
+          this.loading = false;
+          console.error('There was an error during the request', error);
+        }
       });
     } else {
       this.erro = true;
@@ -85,14 +85,16 @@ export class NewItemComponent {
         categoryId: this.form.value.category,
         measurementUnitId: this.form.value.unit,
       };
-      this.provider.put(obj).subscribe((resp) => {
-        this.dialogRef.close('ok');
-        this.sending = false;
-        this.loading = false;
-      }, error => {
-        this.sending = false;
-        this.loading = false;
-        console.error('There was an error during the request', error);
+      this.provider.put(obj).subscribe({
+        next: () => {
+          this.dialogRef.close('ok');
+          this.sending = false;
+          this.loading = false;
+        }, error: (error) => {
+          this.sending = false;
+          this.loading = false;
+          console.error('There was an error during the request', error);
+        }
       });
     } else {
       this.erro = true;

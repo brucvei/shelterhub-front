@@ -13,7 +13,7 @@
         <mat-form-field style="width: 100%">
           <mat-label>Categoria</mat-label>
           <mat-select formControlName="category">
-            <mat-option *ngFor="let categoria of categories" value="{{categoria.id}}">{{ categoria.name }}</mat-option>
+            <mat-option *ngFor="let categoria of categories" [value]="categoria.id">{{ categoria.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -21,7 +21,7 @@
         <mat-form-field style="width: 100%">
           <mat-label>Unidade de medida</mat-label>
           <mat-select formControlName="unit">
-            <mat-option *ngFor="let unidade of measurementUnits" value="{{unidade.id}}">{{ unidade.name }}</mat-option>
+            <mat-option *ngFor="let unidade of measurementUnits" [value]="unidade.id">{{ unidade.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

@@ -6,7 +6,9 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ShelterProvider {
 
-  url = 'https://delicate-cass-vitoriapizzutti-e8c0ca48.koyeb.app/shelter';
+
+  url = 'http://localhost:8080/shelter';
+  // url = 'https://shelterhub-api.koyeb.app/shelter';
 
   constructor(private http: HttpClient) { }
 

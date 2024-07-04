@@ -1,276 +1,278 @@
 <div class="container">
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h4 class="h4">
-      <i class="fa-solid fa-tents"></i>
-      Abrigos
-    </h4>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newShelter()">
-        <i class="fas fa-circle-plus"></i>
-        Novo
-      </button>
-    </div>
-  </div>
-
-  <div *ngIf="loadingShelter" style="display: flex; justify-content: center">
-    <mat-spinner></mat-spinner>
-  </div>
-  <div *ngIf="!loadingShelter">
-    <div class="row" *ngIf="shelters.length == 0" style="display: flex; justify-content: center">
-      <div class="alert alert-secondary" role="alert">
-        Abrigos não encontrados.
+  <div *ngIf="isAdmin()">
+    <div
+      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h4 class="h4">
+        <i class="fa-solid fa-tents"></i>
+        Abrigos
+      </h4>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newShelter()">
+          <i class="fas fa-circle-plus"></i>
+          Novo
+        </button>
       </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4" *ngIf="shelters">
-      <div class="col" *ngFor="let shelter of shelters">
-        <mat-card class="primary">
-          <mat-card-header>
-            <mat-card-title>{{ shelter.name }}</mat-card-title>
-            <mat-card-subtitle>{{ shelter.id }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            {{ shelter.address.street }},
-            {{ shelter.address.number }},
-            {{ shelter.address.city }},
-            {{ shelter.address.state }},
-            {{ shelter.address.zipCode }}
-          </mat-card-content>
-          <mat-card-actions align="end">
+
+    <div *ngIf="loadingShelter" style="display: flex; justify-content: center">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="!loadingShelter">
+      <div class="row" *ngIf="shelters.length == 0" style="display: flex; justify-content: center">
+        <div class="alert alert-secondary" role="alert">
+          Abrigos não encontrados.
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="shelters">
+        <div class="col" *ngFor="let shelter of shelters">
+          <mat-card class="primary">
+            <mat-card-header>
+              <mat-card-title>{{ shelter.name }}</mat-card-title>
+              <mat-card-subtitle>{{ shelter.id }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              {{ shelter.address.street }},
+              {{ shelter.address.number }},
+              {{ shelter.address.city }},
+              {{ shelter.address.state }},
+              {{ shelter.address.zipCode }}
+            </mat-card-content>
+            <mat-card-actions align="end">
               <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="enterShelter(shelter)">
                 <i class="fas fa-sign-in"></i>
               </button>
               <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editShelter(shelter)">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <button mat-mini-fab class="danger" style="margin-right: 5px;" (click)="deleteShelter(shelter.id.toString())">
+              <button mat-mini-fab class="danger" style="margin-right: 5px;"
+                      (click)="deleteShelter(shelter.id.toString())">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
-          </mat-card-actions>
-        </mat-card>
+            </mat-card-actions>
+          </mat-card>
+        </div>
       </div>
     </div>
+
+    <br>
   </div>
 
-  <br>
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h4 class="h4">
-      <i class="fa-solid fa-sitemap"></i>
-      Itens
-    </h4>
-  </div>
-
-  <mat-accordion>
-    <mat-expansion-panel class="primary">
-      <mat-expansion-panel-header>
-        <mat-panel-title><i class="fa-solid fa-boxes-stacked me-3"></i> Itens</mat-panel-title>
-      </mat-expansion-panel-header>
-      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newItem()">
-        <i class="fas fa-circle-plus"></i>
-        Novo
-      </button>
-      <br>
-
-      <div *ngIf="loadingItens" style="display: flex; justify-content: center">
-        <mat-spinner></mat-spinner>
-      </div>
-      <div *ngIf="!loadingItens">
-        <div class="row m-4" *ngIf="!itens" style="display: flex; justify-content: center">
-          <div class="alert alert-secondary" role="alert">
-            Itens não encontrados.
-          </div>
-        </div>
+  <div *ngIf="isAdmin() || isUser()">
+    <div
+      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h4 class="h4">
+        <i class="fa-solid fa-sitemap"></i>
+        Itens
+      </h4>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel class="primary">
+        <mat-expansion-panel-header>
+          <mat-panel-title><i class="fa-solid fa-boxes-stacked me-3"></i> Itens</mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newItem()">
+          <i class="fas fa-circle-plus"></i>
+          Novo
+        </button>
         <br>
 
-        <div *ngIf="itens">
-          <mat-table [dataSource]="itens" class="secondary">
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
-            </ng-container>
+        <div *ngIf="loadingItens" style="display: flex; justify-content: center">
+          <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="!loadingItens">
+          <div class="row m-4" *ngIf="!itens" style="display: flex; justify-content: center">
+            <div class="alert alert-secondary" role="alert">
+              Itens não encontrados.
+            </div>
+          </div>
+          <br>
 
-            <ng-container matColumnDef="category">
-              <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.category ? row.category.name : "" }}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="unit">
-              <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.measurementUnit ? row.measurementUnit.name : "" }}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="actions">
-              <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <div style="display: flex; flex-flow: row; justify-content: space-between">
-                  <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
-              </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef> Item</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <div style="padding: 15px 0;">
-                  <h6>{{ row.name }}</h6>
-                  <p><i class="fa-solid fa-rectangle-list me-3"></i> {{ row.category ? row.category.name : "" }}</p>
-                  <p><i class="fa-solid fa-ruler me-3"></i> {{ row.measurementUnit ? row.measurementUnit.name : "" }}</p>
-                  <div>
+          <div *ngIf="itens">
+            <p-table [value]="itens">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th *ngIf="!isMobileDevice()" pSortableColumn="name">
+                    Item
+                    <p-sortIcon field="name"/>
+                  </th>
+                  <th *ngIf="!isMobileDevice()" pSortableColumn="category.name">
+                    Categoria
+                    <p-sortIcon field="category.name"/>
+                  </th>
+                  <th *ngIf="!isMobileDevice()" pSortableColumn="measurementUnit.name">
+                    Unidade
+                    <p-sortIcon field="measurementUnit.name"/>
+                  </th>
+                  <th *ngIf="!isMobileDevice()">Ações</th>
+                  <th *ngIf="isMobileDevice()">Item</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-row>
+                <tr>
+                  <td *ngIf="!isMobileDevice()">{{ row.name }}</td>
+                  <td *ngIf="!isMobileDevice()">{{ row.category.name }}</td>
+                  <td *ngIf="!isMobileDevice()">{{ row.measurementUnit.name }}</td>
+                  <td *ngIf="!isMobileDevice()">
                     <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">
                       <i class="fa-solid fa-trash-can"></i>
                     </button>
-                  </div>
-                </div>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayColumns"></mat-row>
-          </mat-table>
-        </div>
-      </div>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel class="primary">
-      <mat-expansion-panel-header>
-        <mat-panel-title><i class="fa-solid fa-rectangle-list me-3"></i> Categorias</mat-panel-title>
-      </mat-expansion-panel-header>
-      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newCategory()">
-        <i class="fas fa-circle-plus"></i>
-        Novo
-      </button>
-      <br>
-
-      <div *ngIf="loadingCategories" style="display: flex; justify-content: center">
-        <mat-spinner></mat-spinner>
-      </div>
-      <div *ngIf="!loadingCategories">
-        <div class="row m-4" *ngIf="!categories" style="display: flex; justify-content: center">
-          <div class="alert alert-secondary" role="alert">
-            Categorias não encontradas.
+                  </td>
+                  <td *ngIf="isMobileDevice()">
+                    <div style="padding: 15px 0;">
+                      <h6>{{ row.name }}</h6>
+                      <p><i class="fa-solid fa-rectangle-list me-3"></i> {{ row.category ? row.category.name : "" }}</p>
+                      <p><i
+                        class="fa-solid fa-ruler me-3"></i> {{ row.measurementUnit ? row.measurementUnit.name : "" }}
+                      </p>
+                      <div>
+                        <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editItem(row)">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button mat-mini-fab class="danger" (click)="deleteItem(row.id)">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="primary">
+        <mat-expansion-panel-header>
+          <mat-panel-title><i class="fa-solid fa-rectangle-list me-3"></i> Categorias</mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newCategory()">
+          <i class="fas fa-circle-plus"></i>
+          Novo
+        </button>
         <br>
 
-        <div *ngIf="categories">
-          <mat-table [dataSource]="categories" class="secondary">
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
-            </ng-container>
+        <div *ngIf="loadingCategories" style="display: flex; justify-content: center">
+          <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="!loadingCategories">
+          <div class="row m-4" *ngIf="!categories" style="display: flex; justify-content: center">
+            <div class="alert alert-secondary" role="alert">
+              Categorias não encontradas.
+            </div>
+          </div>
+          <br>
 
-            <ng-container matColumnDef="actions">
-              <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <div style="display: flex; flex-flow: row; justify-content: space-between">
-                  <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editCategory(row)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button mat-mini-fab class="danger" (click)="deleteCategory(row.id)">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
-              </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <div style="padding: 15px 0;">
-                  <h6>{{ row.name }}</h6>
-                  <div>
+          <div *ngIf="categories">
+            <p-table [value]="categories">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th *ngIf="!isMobileDevice()" pSortableColumn="name">
+                    Categoria
+                    <p-sortIcon field="name"/>
+                  </th>
+                  <th *ngIf="!isMobileDevice()">Ações</th>
+                  <th *ngIf="isMobileDevice()">Categorias</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-row>
+                <tr>
+                  <td *ngIf="!isMobileDevice()">{{ row.name }}</td>
+                  <td *ngIf="!isMobileDevice()">
                     <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editCategory(row)">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button mat-mini-fab class="danger" (click)="deleteCategory(row.id)">
                       <i class="fa-solid fa-trash-can"></i>
                     </button>
-                  </div>
-                </div>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayColumns2"></mat-row>
-          </mat-table>
-        </div>
-      </div>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel class="primary">
-      <mat-expansion-panel-header>
-        <mat-panel-title><i class="fa-solid fa-ruler me-3"></i> Unidades de medidas</mat-panel-title>
-      </mat-expansion-panel-header>
-      <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newUnit()">
-        <i class="fas fa-circle-plus"></i>
-        Novo
-      </button>
-      <br>
-
-      <div *ngIf="loadingUnits" style="display: flex; justify-content: center">
-        <mat-spinner></mat-spinner>
-      </div>
-      <div *ngIf="!loadingUnits">
-        <div class="row m-4" *ngIf="!measurementUnits" style="display: flex; justify-content: center">
-          <div class="alert alert-secondary" role="alert">
-            Unidades de medidas não encontradas.
+                  </td>
+                  <td *ngIf="isMobileDevice()">
+                    <div style="padding: 15px 0;">
+                      <h6>{{ row.name }}</h6>
+                      <div>
+                        <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editCategory(row)">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button mat-mini-fab class="danger" (click)="deleteCategory(row.id)">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="primary">
+        <mat-expansion-panel-header>
+          <mat-panel-title><i class="fa-solid fa-ruler me-3"></i> Unidades de medidas</mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button mat-flat-button style="background: limegreen; color: white;" (click)="newUnit()">
+          <i class="fas fa-circle-plus"></i>
+          Novo
+        </button>
         <br>
 
-        <div *ngIf="measurementUnits">
-          <mat-table [dataSource]="measurementUnits" class="secondary">
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
-            </ng-container>
+        <div *ngIf="loadingUnits" style="display: flex; justify-content: center">
+          <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="!loadingUnits">
+          <div class="row m-4" *ngIf="!measurementUnits" style="display: flex; justify-content: center">
+            <div class="alert alert-secondary" role="alert">
+              Unidades de medidas não encontradas.
+            </div>
+          </div>
+          <br>
 
-            <ng-container matColumnDef="actions">
-              <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <div style="display: flex; flex-flow: row; justify-content: space-between">
-                  <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editUnit(row)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button mat-mini-fab class="danger" (click)="deleteUnit(row.id)">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
-              </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef> Unidade</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <div style="padding: 15px 0;">
-                  <h6>{{ row.name }}</h6>
-                  <div>
+          <div *ngIf="measurementUnits">
+            <p-table [value]="measurementUnits">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th *ngIf="!isMobileDevice()" pSortableColumn="name">
+                    Unidade de medida
+                    <p-sortIcon field="name"/>
+                  </th>
+                  <th *ngIf="!isMobileDevice()">Ações</th>
+                  <th *ngIf="isMobileDevice()">Unidades de medida</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-row>
+                <tr>
+                  <td *ngIf="!isMobileDevice()">{{ row.name }}</td>
+                  <td *ngIf="!isMobileDevice()">
                     <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editUnit(row)">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button mat-mini-fab class="danger" (click)="deleteUnit(row.id)">
                       <i class="fa-solid fa-trash-can"></i>
                     </button>
-                  </div>
-                </div>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayColumns2"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayColumns2"></mat-row>
-          </mat-table>
+                  </td>
+                  <td *ngIf="isMobileDevice()">
+                    <div style="padding: 15px 0;">
+                      <h6>{{ row.name }}</h6>
+                      <div>
+                        <button mat-mini-fab color="secondary" style="margin-right: 5px;" (click)="editUnit(row)">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button mat-mini-fab class="danger" (click)="deleteUnit(row.id)">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
         </div>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
-
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
   <br>
   <br>
 </div>

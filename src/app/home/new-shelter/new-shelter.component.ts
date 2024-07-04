@@ -75,14 +75,16 @@ export class NewShelterComponent {
           zipCode: this.form.value.zipcode
         }
       };
-      this.provider.post(obj).subscribe((resp: Shelter) => {
+      this.provider.post(obj).subscribe({
+        next: () => {
         this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;
-      }, error => {
-        this.sending = false;
-        this.loading = false;
-        console.error('There was an error during the request', error);
+      }, error: (error) => {
+          this.sending = false;
+          this.loading = false;
+          console.error('There was an error during the request', error);
+        }
       });
     } else {
       this.erro = true;
@@ -107,7 +109,7 @@ export class NewShelterComponent {
           zipCode: this.form.value.zipcode
         }
       };
-      this.provider.put(obj).subscribe((resp: Shelter) => {
+      this.provider.put(obj).subscribe(() => {
         this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;

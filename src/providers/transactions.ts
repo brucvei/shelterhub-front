@@ -6,7 +6,9 @@ import {HttpClient} from "@angular/common/http";
 })
 export class TransactionsProvider {
 
-  url = 'https://delicate-cass-vitoriapizzutti-e8c0ca48.koyeb.app/transaction';
+
+  url = 'http://localhost:8080/transaction';
+  // url = 'https://shelterhub-api.koyeb.app/transaction';
 
   constructor(private http: HttpClient) { }
 

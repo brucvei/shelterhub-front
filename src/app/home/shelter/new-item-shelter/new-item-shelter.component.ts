@@ -1,8 +1,7 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ItemShelterProvider } from '../../../../providers/item-shelter';
-import { TransactionsProvider } from '../../../../providers/transactions';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {ItemShelterProvider} from '../../../../providers/item-shelter';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-new-item-shelter',
@@ -59,7 +58,7 @@ export class NewItemShelterComponent {
         quantity: this.form.value.quantity,
         shelterId: this.shelterId,
       };
-      this.provider.post(obj).subscribe((resp) => {
+      this.provider.post(obj).subscribe(() => {
         this.dialogRef.close('ok');
         this.sending = false;
         this.loading = false;
@@ -84,14 +83,16 @@ export class NewItemShelterComponent {
         categoryId: this.form.value.category,
         measurementUnitId: this.form.value.unit,
       };
-      this.provider.put(obj).subscribe((resp) => {
-        this.dialogRef.close('ok');
-        this.sending = false;
-        this.loading = false;
-      }, error => {
-        this.sending = false;
-        this.loading = false;
-        console.error('There was an error during the request', error);
+      this.provider.put(obj).subscribe({
+        next: () => {
+          this.dialogRef.close('ok');
+          this.sending = false;
+          this.loading = false;
+        }, error: (error) => {
+          this.sending = false;
+          this.loading = false;
+          console.error('There was an error during the request', error);
+        }
       });
     } else {
       this.erro = true;

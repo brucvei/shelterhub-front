@@ -8,6 +8,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {NewItemShelterComponent} from './new-item-shelter/new-item-shelter.component';
 import {ItemProvider} from '../../../providers/item';
 import {NewTransactionComponent} from './new-transaction/new-transaction.component';
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-shelter',
@@ -31,31 +32,21 @@ export class ShelterComponent implements OnInit, OnDestroy {
     "OUTPUT": "Saída",
   }
 
-
-  columns = ['name', 'category', 'unit', 'quantity'];
-  columns2 = ['action', 'date', 'item', 'quantity'];
-
-  displayColumns = this.columns;
-  displayColumns2 = this.columns2;
-
   constructor(private route: ActivatedRoute,
               private itemProvider: ItemProvider,
               private itemShelterProvider: ItemShelterProvider,
               private transactionProvider: TransactionsProvider,
               readonly snackBar: MatSnackBar,
+              private authService: AuthService,
               public dialog: MatDialog,
               public router: Router) {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    }
     if (!this.shelter) {
       this.router.navigate(['/home']);
     }
     this.shelterId = <string>this.route.snapshot.paramMap.get('id');
-    if (this.isMobileDevice()) {
-      this.displayColumns = ['mobile'];
-      this.displayColumns2 = ['mobile'];
-    } else {
-      this.displayColumns = this.columns;
-      this.displayColumns2 = this.columns2;
-    }
 
     this.getItens();
     this.getShelterItens();
@@ -65,13 +56,9 @@ export class ShelterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     fromEvent(window, 'resize')
       .pipe(takeUntil(this.destroy$))
-      .subscribe(e => {
+      .subscribe(() => {
         if (this.isMobileDevice()) {
-          this.displayColumns = ['mobile'];
-          this.displayColumns2 = ['mobile'];
-        } else {
-          this.displayColumns = this.columns;
-          this.displayColumns2 = this.columns2;
+          console.log('mobile')
         }
       });
   }
@@ -88,25 +75,32 @@ export class ShelterComponent implements OnInit, OnDestroy {
 
   getItens() {
     this.loading = true;
-    this.itemProvider.get().subscribe(resp => {
-      this.itens = resp;
-      this.loading = false;
+    this.itemProvider.get().subscribe({
+      next: resp => {
+        this.itens = resp;
+        this.loading = false;
+      }
     });
   }
 
   getShelterItens() {
     this.loading = true;
-    this.itemShelterProvider.get(this.shelterId).subscribe(resp => {
-      this.shelterItens = resp;
-      this.loading = false;
+    this.itemShelterProvider.get(this.shelterId).subscribe({
+      next:resp => {
+        this.shelterItens = resp;
+        console.log('shelterItens', this.shelterItens)
+        this.loading = false;
+      }
     });
   }
 
   getTransactions() {
     this.loading = true;
-    this.transactionProvider.get(this.shelterId).subscribe(resp => {
-      this.transactions = resp;
-      this.loading = false;
+    this.transactionProvider.get(this.shelterId).subscribe({
+      next: resp => {
+        this.transactions = resp;
+        this.loading = false;
+      }
     });
   }
 
@@ -117,10 +111,12 @@ export class ShelterComponent implements OnInit, OnDestroy {
         shelterId: this.shelterId,
       },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'ok') {
-        let snackBarRef = this.snackBar.open('Item associado ao abrigo com sucesso!', "", {duration: 3000});
-        this.getShelterItens();
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+        if (result === 'ok') {
+          this.snackBar.open('Item associado ao abrigo com sucesso!', "", {duration: 3000});
+          this.getShelterItens();
+        }
       }
     });
   }
@@ -132,10 +128,13 @@ export class ShelterComponent implements OnInit, OnDestroy {
         shelterId: this.shelterId,
       },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'ok') {
-        let snackBarRef = this.snackBar.open('Transação feita com sucesso!', "", {duration: 3000});
-        this.getTransactions();
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+        if (result === 'ok') {
+          this.snackBar.open('Transação feita com sucesso!', "", {duration: 3000});
+          this.getTransactions();
+          this.getShelterItens();
+        }
       }
     });
   }

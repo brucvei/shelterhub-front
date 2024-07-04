@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="login-card row">
+<div class="col-md-10 col-sm-12">
+    <mat-card class="primary">
+      <mat-card-header>
+        <mat-card-title>
+          <h5>Cadastrar-se</h5>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form class="form-group" [formGroup]="signupForm">
+          <div class="row">
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>CPF</mat-label>
+                <input matInput formControlName="cpf" mask="000.000.000-00">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Função</mat-label>
+                <mat-select formControlName="function">
+                  <mat-option value="ADMIN">Administrador</mat-option>
+                  <mat-option value="FUNCTIONARY">Funcionário</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Código do Abrigo</mat-label>
+                <input matInput formControlName="shelter">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Senha</mat-label>
+                <input matInput formControlName="password" type="password">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Repita sua senha</mat-label>
+                <input matInput formControlName="password2" type="password">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-12 mb-3">
+              <button mat-button mat-stroked-button style="width: 100%;" (click)="signIn()">
+                <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+                Ja tenho uma conta
+              </button>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;"
+                      (click)="submit()">
+                <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+                Entrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+</div>
+  </div>
+</div>
