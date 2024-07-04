@@ -6,8 +6,8 @@ import {HttpClient} from "@angular/common/http";
 })
 export class CategoryProvider {
 
-  url = 'http://localhost:8080/category';
-  // url = 'https://shelterhub-api.koyeb.app/category';
+  // url = 'http://localhost:8080/category';
+  url = 'https://shelterhub-api.koyeb.app/category';
 
   constructor(private http: HttpClient) { }
 

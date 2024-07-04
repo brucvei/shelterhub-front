@@ -9,8 +9,8 @@ import {Router} from "@angular/router";
 export class AuthService {
 
   httpClient = inject(HttpClient);
-  baseUrl = 'http://localhost:8080';
-  // baseUrl = 'https://shelterhub-api.koyeb.app';
+  // baseUrl = 'http://localhost:8080';
+  baseUrl = 'https://shelterhub-api.koyeb.app';
 
   constructor(private router: Router) { }
 

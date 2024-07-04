@@ -7,8 +7,8 @@ import {HttpClient} from "@angular/common/http";
 export class TransactionsProvider {
 
 
-  url = 'http://localhost:8080/transaction';
-  // url = 'https://shelterhub-api.koyeb.app/transaction';
+  // url = 'http://localhost:8080/transaction';
+  url = 'https://shelterhub-api.koyeb.app/transaction';
 
   constructor(private http: HttpClient) { }
 

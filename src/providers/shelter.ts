@@ -7,8 +7,8 @@ import {HttpClient} from "@angular/common/http";
 export class ShelterProvider {
 
 
-  url = 'http://localhost:8080/shelter';
-  // url = 'https://shelterhub-api.koyeb.app/shelter';
+  // url = 'http://localhost:8080/shelter';
+  url = 'https://shelterhub-api.koyeb.app/shelter';
 
   constructor(private http: HttpClient) { }
 
