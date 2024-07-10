@@ -24,40 +24,57 @@ export class LoginComponent implements OnInit {
 
   sending: boolean = false;
   volunteer: boolean = false;
+  error: boolean = false;
 
   ngOnInit(): void {
     if (this.url.snapshot.paramMap.get('id')) {
       this.volunteer = true;
       this.loginForm.get('password')?.removeValidators(Validators.required);
+    } else {
+      this.loginForm.get('name')?.removeValidators(Validators.required);
     }
   }
 
   submit() {
-    // @ts-ignore
-    if (!this.volunteer && this.loginForm.valid && this.cpfUtil.validateCPF(this.loginForm.value.cpf)) {
-      let obj = {
-        cpf: this.loginForm.value.cpf,
-        password: this.loginForm.value.password
-      }
-      this.authService.login(obj).subscribe(() => {
-        if (this.authService.isAdmin()) {
-          this.router.navigate(['/admin']);
-        } else if (this.authService.isUser()) {
-          this.router.navigate(['/']);
-        } else if (this.authService.isVolunteer()) {
-          this.router.navigate(['/']);
+    if (!this.volunteer) {
+      // @ts-ignore
+      if (this.loginForm.valid && this.cpfUtil.validateCPF(this.loginForm.value.cpf)) {
+        let obj = {
+          cpf: this.loginForm.value.cpf,
+          password: this.loginForm.value.password
         }
-      });
-    } else { // @ts-ignore
-      if (this.volunteer && this.loginForm.valid && this.cpfUtil.validateCPF(this.loginForm.value.cpf)) {
-        console.log(this.loginForm.value);
+        this.error = false;
+        this.sending = true;
+        this.authService.login(obj).subscribe({
+          next: () => {
+            this.router.navigate(['/home']);
+            this.sending = false;
+          }, error: err => {
+            console.log(err);
+            this.sending = false;
+            this.error = true;
+          }
+        });
+      }
+    } else {
+      // @ts-ignore
+      if (this.loginForm.valid && this.cpfUtil.validateCPF(this.loginForm.value.cpf)) {
         let obj = {
           cpf: this.loginForm.value.cpf,
           name: this.loginForm.value.name,
           shelterId: this.url.snapshot.paramMap.get('id')
         }
-        this.authService.loginVolunteer(obj).subscribe(() => {
-          this.router.navigate(['/']);
+        this.error = false;
+        this.sending = true;
+        this.authService.loginVolunteer(obj).subscribe({
+          next: () => {
+            this.sending = false;
+            this.router.navigate(['/shelter/' + this.url.snapshot.paramMap.get('id')]);
+          }, error: err => {
+            console.log(err);
+            this.sending = false;
+            this.error = true;
+          }
         });
       }
     }

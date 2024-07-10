@@ -16,6 +16,7 @@ export class SignupComponent {
   cpfUtil = inject(CPFUtil);
 
   sending: boolean = false;
+  error: boolean = false;
 
   public signupForm = new FormGroup({
     cpf: new FormControl('', [Validators.required]),
@@ -34,17 +35,24 @@ export class SignupComponent {
     // @ts-ignore
     if (this.signupForm.valid && this.cpfUtil.validateCPF(this.signupForm.value.cpf)) {
       let obj = {
+        cpf: this.signupForm.value.cpf,
         name: this.signupForm.value.name,
         password: this.signupForm.value.password,
         role: this.signupForm.value.function,
         shelterId: this.signupForm.value.shelter
       };
+      this.error = false;
+      // console.log(obj)
       this.authService.signup(obj).subscribe({
-        next: (data: any) => {
-          console.log(data);
+        next: () => {
           this.router.navigate(['/login']);
+          this.sending = false;
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          console.log(err)
+          this.sending = false;
+          this.error = true;
+        }
       });
     }
   }

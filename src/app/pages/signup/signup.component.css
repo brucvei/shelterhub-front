@@ -9,3 +9,8 @@
   /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
 }
 
+.alert-secondary{
+  background-color: #a83b45 !important;
+  border-color: #721c24 !important;
+  color: #f5c6cb !important;
+}

@@ -54,17 +54,25 @@
               </mat-form-field>
             </div>
           </div>
+
+          <div class="row" *ngIf="error" style="display: flex; justify-content: center">
+            <div class="col">
+              <div class="alert alert-secondary" role="alert">
+                Ocorreu um erro ao tentar logar. Verifique os dados e tente novamente.
+              </div>
+            </div>
+          </div>
+
           <div class="row">
+            <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
             <div class="col-md-6 col-sm-12 mb-3">
               <button mat-button mat-stroked-button style="width: 100%;" (click)="signIn()">
-                <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
                 Ja tenho uma conta
               </button>
             </div>
             <div class="col-md-6 col-sm-12">
               <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;"
                       (click)="submit()">
-                <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
                 Entrar
               </button>
             </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,7 @@ import {HttpClient} from "@angular/common/http";
 export class MeasurementUnitProvider {
 
 
-  // url = 'http://localhost:8080/measurement-unit';
-  url = 'https://shelterhub-api.koyeb.app/measurement-unit';
+  url = environment.url + '/measurement-unit';
 
   constructor(private http: HttpClient) { }
 

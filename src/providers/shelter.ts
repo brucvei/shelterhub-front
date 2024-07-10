@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,7 @@ import {HttpClient} from "@angular/common/http";
 export class ShelterProvider {
 
 
-  // url = 'http://localhost:8080/shelter';
-  url = 'https://shelterhub-api.koyeb.app/shelter';
+  url = environment.url + '/shelter';
 
   constructor(private http: HttpClient) { }
 

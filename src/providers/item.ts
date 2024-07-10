@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemProvider {
 
-  // url = 'http://localhost:8080/item';
-  url = 'https://shelterhub-api.koyeb.app/item';
+  url = environment.url + '/item';
 
   constructor(private http: HttpClient) { }
 

@@ -1,56 +1,69 @@
 <div class="container">
   <div class="login-card row">
     <div class="col-md-8 col-sm-12">
-  <mat-card class="primary col-4">
-    <mat-card-header>
-      <mat-card-title>
-        <h5>Entrar</h5>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="form-group" [formGroup]="loginForm">
-        <div class="row">
-          <div class="col">
-            <mat-form-field style="width: 100%;">
-              <mat-label>CPF</mat-label>
-              <input matInput formControlName="cpf" mask="000.000.000-00">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row" *ngIf="!volunteer">
-          <div class="col">
-            <mat-form-field style="width: 100%;">
-              <mat-label>Senha</mat-label>
-              <input matInput formControlName="password" type="password">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row" *ngIf="volunteer">
-          <div class="col">
-            <mat-form-field style="width: 100%;">
-              <mat-label>Nome</mat-label>
-              <input matInput formControlName="name" type="text">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 col-sm-12 mb-3">
-            <button mat-button mat-stroked-button style="width: 100%;" (click)="signUp()">
-              <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
-              Cadastrar
-            </button>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;" (click)="submit()">
-              <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
-              Entrar
-            </button>
-          </div>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      <mat-card class="primary col-4">
+        <mat-card-header>
+          <mat-card-title>
+            <h5>Entrar</h5>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="form-group" [formGroup]="loginForm">
+            <div class="row">
+              <div class="col">
+                <mat-form-field style="width: 100%;">
+                  <mat-label>CPF</mat-label>
+                  <input matInput formControlName="cpf" mask="000.000.000-00">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row" *ngIf="!volunteer">
+              <div class="col">
+                <mat-form-field style="width: 100%;">
+                  <mat-label>Senha</mat-label>
+                  <input matInput formControlName="password" type="password">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row" *ngIf="volunteer">
+              <div class="col">
+                <mat-form-field style="width: 100%;">
+                  <mat-label>Nome</mat-label>
+                  <input matInput formControlName="name" type="text">
+                </mat-form-field>
+              </div>
+            </div>
 
-</div>
-</div>
+            <div class="row" *ngIf="error" style="display: flex; justify-content: center">
+              <div class="col">
+                <div class="alert alert-secondary" role="alert">
+                  Ocorreu um erro ao tentar logar. Verifique os dados e tente novamente.
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="p-2">
+                <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+              </div>
+
+              <div class="col-md-6 col-sm-12 mb-3" *ngIf="!volunteer">
+                <button mat-button mat-stroked-button style="width: 100%;"
+                        [disabled]="sending" (click)="signUp()">
+                  Cadastrar
+                </button>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;"
+                        [disabled]="sending" (click)="submit()">
+                  Entrar
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
 </div>
