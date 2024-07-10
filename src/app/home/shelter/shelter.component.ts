@@ -40,12 +40,6 @@ export class ShelterComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               public dialog: MatDialog,
               public router: Router) {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    }
-    if (!this.shelter) {
-      this.router.navigate(['/home']);
-    }
     this.shelterId = <string>this.route.snapshot.paramMap.get('id');
 
     this.getItens();
@@ -151,5 +145,9 @@ export class ShelterComponent implements OnInit, OnDestroy {
       const minutes = ("0" + date.getMinutes()).slice(-2);
 
       return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }
+
+  isVolunteer() {
+    return this.authService.isVolunteer();
   }
 }

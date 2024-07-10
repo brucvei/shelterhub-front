@@ -67,9 +67,12 @@ export class LoginComponent implements OnInit {
         this.error = false;
         this.sending = true;
         this.authService.loginVolunteer(obj).subscribe({
-          next: () => {
+          next: (resp) => {
+            console.log(resp)
+            let url = '/shelter/' + this.url.snapshot.paramMap.get('id');
+            console.log(url)
             this.sending = false;
-            this.router.navigate(['/shelter/' + this.url.snapshot.paramMap.get('id')]);
+            this.router.navigate([url]);
           }, error: err => {
             console.log(err);
             this.sending = false;
