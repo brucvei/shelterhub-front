@@ -54,36 +54,36 @@
       </div>
     </div>
 
-    <!--    <div-->
-    <!--      class="pt-3 pb-2 mt-3 mb-3 border-bottom">-->
-    <!--      <h4 class="h4">-->
-    <!--        <i class="fa-solid fa-chart-column"></i>-->
-    <!--        Relatório de transações-->
-    <!--      </h4>-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <div>-->
-    <!--        <button mat-button style="color: black;" (click)="changeMonth2('-')"><i class="fa-solid fa-caret-left"></i>-->
-    <!--        </button>-->
-    <!--        <button mat-button [matMenuTriggerFor]="menu" style="color: black;">{{ select.nome }}</button>-->
-    <!--        <mat-menu #menu="matMenu">-->
-    <!--          <button mat-menu-item *ngFor="let month of months" (click)="changeMonth(month.numb)">{{ month.nome }}</button>-->
-    <!--        </mat-menu>-->
-    <!--        <button mat-button style="color: black;" (click)="changeMonth2('+')"><i class="fa-solid fa-caret-right"></i>-->
-    <!--        </button>-->
-    <!--      </div>-->
-    <!--      <span *ngIf="withoutTranstactions">Não houve transações nesse período</span>-->
-    <!--      <div class="row">-->
-    <!--        <div class="col">-->
-    <!--          <h5>Fluxo de transações</h5>-->
-    <!--          <canvas id="chart1"></canvas>-->
-    <!--        </div>-->
-    <!--        <div class="col">-->
-    <!--          <h5>Fluxo de itens</h5>-->
-    <!--          <canvas id="chart2"></canvas>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
+    <div
+      class="pt-3 pb-2 mt-3 mb-3 border-bottom">
+      <h4 class="h4">
+        <i class="fa-solid fa-chart-column"></i>
+        Relatório de transações
+      </h4>
+    </div>
+    <div>
+      <div style="display: flex;justify-content: center;">
+        <button mat-button style="color: black;" (click)="changeMonth2('-')"><i class="fa-solid fa-caret-left"></i>
+        </button>
+        <button mat-button [matMenuTriggerFor]="menu" style="color: black;">{{ select.nome }}</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngFor="let month of months" (click)="changeMonth(month.numb)">{{ month.nome }}</button>
+        </mat-menu>
+        <button mat-button style="color: black;" (click)="changeMonth2('+')"><i class="fa-solid fa-caret-right"></i>
+        </button>
+      </div>
+      <span *ngIf="withoutTranstactions">Não houve transações nesse período</span>
+      <div class="row" *ngIf="!withoutTranstactions">
+        <div class="col-md-6 col-sm-12">
+          <h5>Fluxo de transações</h5>
+          <canvas id="chart1"></canvas>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <h5>Fluxo de itens</h5>
+          <canvas id="chart2"></canvas>
+        </div>
+      </div>
+    </div>
     <br>
   </div>
 

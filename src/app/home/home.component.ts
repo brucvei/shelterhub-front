@@ -12,10 +12,11 @@ import {of} from "rxjs";
 import {NewCategoryUnitComponent} from "./new-category-unit/new-category-unit.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthService} from "../auth/auth.service";
-import {Chart, ChartConfiguration} from "chart.js";
+import {Chart, ChartConfiguration, registerables} from "chart.js";
 import {TransactionsProvider} from "../../providers/transactions";
 import moment from "moment";
 import {NewTransactionComponent} from "./shelter/new-transaction/new-transaction.component";
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-home',
@@ -41,6 +42,7 @@ export class HomeComponent implements OnInit {
   }, {nome: 'Out', numb: 9}, {nome: 'Nov', numb: 10}, {nome: 'Dez', numb: 11}];
   select: any = this.months[moment().month()];
   withoutTranstactions: boolean = false;
+  charts: any = [];
 
   constructor(private shelterProvider: ShelterProvider,
               private itemProvider: ItemProvider,
@@ -121,24 +123,25 @@ export class HomeComponent implements OnInit {
   }
 
   getChart() {
-    // this.withoutTranstactions = false;
-    // let obj = {
-    //   startDate: moment().month(this.select.numb).startOf('month').format('YYYY-MM-DD'),
-    //   endDate: moment().month(this.select.numb).endOf('month').format('YYYY-MM-DD')
-    // }
-    // this.transactionProvider.getAll(obj).subscribe({
-    //   next: resp => {
-    //     if (resp) {
-    //       this.generateReport(resp);
-    //     } else {
-    //       this.withoutTranstactions = true;
-    //     }
-    //   }, error: (error) => {
-    //     console.error('There was an error during the request', error);
-    //     this.snackBar.open('Não foi possível buscar o gráfico!', "", {duration: 3000});
-    //     return of([]); // Retorna um Observable vazio para que o fluxo continue
-    //   }
-    // });
+    this.withoutTranstactions = false;
+    let obj = {
+      startDate: moment().month(this.select.numb).startOf('month').format('YYYY-MM-DD'),
+      endDate: moment().month(this.select.numb).endOf('month').format('YYYY-MM-DD')
+    }
+    this.transactionProvider.getAll(obj).subscribe({
+      next: resp => {
+        if (resp) {
+          this.generateReport(resp);
+        } else {
+          this.withoutTranstactions = true;
+          this.destroyCharts();
+        }
+      }, error: (error) => {
+        console.error('There was an error during the request', error);
+        this.snackBar.open('Não foi possível buscar o gráfico!', "", {duration: 3000});
+        return of([]); // Retorna um Observable vazio para que o fluxo continue
+      }
+    });
   }
 
   getItens() {
@@ -427,13 +430,7 @@ export class HomeComponent implements OnInit {
   }
 
   private generateReport(resp: any) {
-    // @ts-ignore
-    // @ts-ignore
-
-    let elem1: HTMLCanvasElement = document.getElementById('chart1');
-    if (elem1 == null) return;
-    elem1.style.display = 'block';
-    document.getElementById('chart2');
+    this.destroyCharts();
     let data = resp;
     let byTransaction: any = {"OUTPUT": 0, "INPUT": 0}, byItem: any = [], labelsItem: any = [];
     data.forEach((transaction: any) => {
@@ -454,38 +451,45 @@ export class HomeComponent implements OnInit {
       }
 
     });
-    console.log('byTransaction', byTransaction);
-    console.log('byItem', byItem);
-    console.log('labelsItem', labelsItem);
-    // let config: ChartConfiguration = {
-    //   type: 'bar',
-    //   data: {
-    //     labels: ["Entrada", "Saída"],
-    //     datasets: [{
-    //       // labels: ["Entrada", "Saída"],
-    //       label: "AAAAAAAAAaa",
-    //       data: [byTransaction["OUTPUT"], byTransaction["INPUT"]],
-    //     }]
-    //   },
-    //   options: {
-    //     responsive: true,
-    //     scales: {
-    //       y: {
-    //         beginAtZero: true
-    //       }
-    //     },
-    //     plugins: {
-    //       legend: {
-    //         display: false
-    //       },
-    //       tooltip: {
-    //         enabled: false
-    //       }
-    //     }
-    //   }
-    // };
-    //
-    // let chart = new Chart(elem1, config);
+
+    let config: ChartConfiguration = {
+      type: 'bar',
+      data: {
+        labels: ["Entrada", "Saída"],
+        datasets: [{
+          // labels: ["Entrada", "Saída"],
+          label: "AAAAAAAAAaa",
+          data: [byTransaction["OUTPUT"], byTransaction["INPUT"]],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.9)',
+            'rgba(255, 159, 64, 0.9)',
+            'rgba(255, 205, 86, 0.9)',
+            'rgba(75, 192, 192, 0.9)',
+            'rgba(54, 162, 235, 0.9)',
+            'rgba(153, 102, 255, 0.9)',
+            'rgba(201, 203, 207, 0.9)'
+          ],
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false
+          }
+        }
+      }
+    };
+
+    this.charts[1]  = new Chart(document.getElementById('chart1') as HTMLCanvasElement, config);
 
     let config2: ChartConfiguration = {
       type: 'bar',
@@ -494,21 +498,44 @@ export class HomeComponent implements OnInit {
         datasets: [{
           //       // labels: ["Entrada", "Saída"],
           //       label: "AAAAAAAAAaa",
+          label: "AAAAAAAAAaa",
           data: byItem,
+          backgroundColor: [
+            'rgba(153, 102, 255, 0.9)',
+            'rgba(54, 162, 235, 0.9)',
+            'rgba(75, 192, 192, 0.9)',
+            'rgba(201, 203, 207, 0.9)',
+            'rgba(255, 205, 86, 0.9)',
+            'rgba(255, 159, 64, 0.9)',
+            'rgba(255, 99, 132, 0.9)',
+          ],
         }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false
           }
         }
       }
     };
 
-    let chart2 = new Chart(elem1, config2);
+    this.charts[1] = new Chart(document.getElementById('chart2') as HTMLCanvasElement, config2);
 
+  }
+
+  destroyCharts(){
+    if (!this.charts) {
+      this.charts.forEach((chart: { destroy: () => any; }) => chart.destroy());
+    }
   }
 }

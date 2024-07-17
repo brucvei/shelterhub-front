@@ -47,7 +47,7 @@
                 <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
               </div>
 
-              <div class="col-md-6 col-sm-12">
+              <div class="col-md-6 col-sm-12" *ngIf="!volunteer">
                 <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;"
                         [disabled]="sending" (click)="submit()">
                   Entrar
@@ -58,6 +58,15 @@
                 <button mat-button mat-stroked-button style="width: 100%;"
                         [disabled]="sending" (click)="signUp()">
                   Cadastrar
+                </button>
+              </div>
+            </div>
+
+            <div class="row" style="display: flex; justify-content: center;">
+              <div class="col-md-6 col-sm-12" *ngIf="volunteer">
+                <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;"
+                        [disabled]="sending" (click)="submit()">
+                  Entrar
                 </button>
               </div>
             </div>

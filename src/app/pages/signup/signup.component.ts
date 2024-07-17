@@ -21,8 +21,8 @@ export class SignupComponent {
   public signupForm = new FormGroup({
     cpf: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
-    function: new FormControl('', [Validators.required]),
-    shelter: new FormControl('', [Validators.required]),
+    // function: new FormControl('', [Validators.required]),
+    // shelter: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
     password2: new FormControl('', [Validators.required])
   });
@@ -38,8 +38,8 @@ export class SignupComponent {
         cpf: this.signupForm.value.cpf,
         name: this.signupForm.value.name,
         password: this.signupForm.value.password,
-        role: this.signupForm.value.function,
-        shelterId: this.signupForm.value.shelter
+        role: "ADMIN",
+        shelterId: "1"
       };
       this.error = false;
       // console.log(obj)
