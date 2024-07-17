@@ -1,12 +1,16 @@
-<h2 mat-dialog-title>Nova transação</h2>
+<h2 mat-dialog-title *ngIf="!transfer">Nova transação</h2>
+<h2 mat-dialog-title *ngIf="transfer">Nova transação</h2>
 <div mat-dialog-content>
   <form [formGroup]="form">
     <div class="row">
       <div class="col-md">
         <mat-form-field class="example-full-width">
           <mat-label>Item</mat-label>
-          <mat-select formControlName="item">
-               <mat-option *ngFor="let item of all" [value]="item">{{ item.item.name }}</mat-option>
+          <mat-select formControlName="item" *ngIf="!transfer">
+            <mat-option *ngFor="let item of all" [value]="item">{{ item.item.name }}</mat-option>
+          </mat-select>
+          <mat-select formControlName="item" *ngIf="transfer">
+            <mat-option *ngFor="let item of all" [value]="item">{{ item.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -18,16 +22,32 @@
       </div>
     </div>
     <div class="row">
-        <div class="col-md">
-          <mat-form-field class="example-full-width">
-            <mat-label>Tipo</mat-label>
-            <mat-select formControlName="action">
-                 <mat-option value="INPUT">Entrada</mat-option>
-                 <mat-option value="OUTPUT">Saída</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+      <div class="col-md" *ngIf="!transfer">
+        <mat-form-field class="example-full-width">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="action">
+            <mat-option value="INPUT">Entrada</mat-option>
+            <mat-option value="OUTPUT">Saída</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+      <div class="col-md" *ngIf="transfer">
+        <mat-form-field class="example-full-width">
+          <mat-label>Abrigo de origem</mat-label>
+          <mat-select formControlName="originalShelter">
+            <mat-option *ngFor="let abrigo of shelters" [value]="abrigo.id">{{abrigo.id}} - {{abrigo.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md" *ngIf="transfer">
+        <mat-form-field class="example-full-width">
+          <mat-label>Abrigo de destino</mat-label>
+          <mat-select formControlName="otherShelter">
+            <mat-option *ngFor="let abrigo of shelters" [value]="abrigo.id">{{abrigo.id}} - {{abrigo.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
   </form>
   <div *ngIf="erro && !erroMsg" class="alert danger" role="alert">
     Preencha todos os campos!
@@ -39,12 +59,16 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button mat-raised-button *ngIf="!edit" style="background: limegreen; color: white;" (click)="post()">
+  <button mat-button mat-raised-button *ngIf="!edit && !transfer" style="background: limegreen; color: white;" (click)="post()">
     <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
     Criar
   </button>
-  <button mat-button mat-raised-button *ngIf="edit" style="background: rebeccapurple; color: white;" (click)="put()">
+  <button mat-button mat-raised-button *ngIf="edit && !transfer" style="background: rebeccapurple; color: white;" (click)="put()">
     <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
     Editar
+  </button>
+  <button mat-button mat-raised-button *ngIf="transfer" style="background: rebeccapurple; color: white;" (click)="postTransfer()">
+    <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
+    Transferir
   </button>
 </div>

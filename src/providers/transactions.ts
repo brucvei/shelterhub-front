@@ -16,6 +16,10 @@ export class TransactionsProvider {
     return this.http.get<any>(this.url + '/shelter/' + id);
   }
 
+  getAll(obj: any) {
+    return this.http.get<any>(this.url + '?initialDate=' + obj.startDate + '&finalDate=' + obj.endDate);
+  }
+
   getById(id: string) {
     return this.http.get<any>(this.url + '/' + id);
   }
@@ -30,5 +34,9 @@ export class TransactionsProvider {
 
   delete(id: string) {
     return this.http.delete<any>(this.url + '/' + id);
+  }
+
+  transfer(obj: any) {
+    return this.http.post<any>(environment.url + '/shelter-transaction', obj);
   }
 }

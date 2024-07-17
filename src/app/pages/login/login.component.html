@@ -47,16 +47,17 @@
                 <mat-progress-bar mode="indeterminate" *ngIf="sending"></mat-progress-bar>
               </div>
 
-              <div class="col-md-6 col-sm-12 mb-3" *ngIf="!volunteer">
-                <button mat-button mat-stroked-button style="width: 100%;"
-                        [disabled]="sending" (click)="signUp()">
-                  Cadastrar
-                </button>
-              </div>
               <div class="col-md-6 col-sm-12">
                 <button mat-button mat-raised-button style="background: limegreen; color: white; width: 100%;"
                         [disabled]="sending" (click)="submit()">
                   Entrar
+                </button>
+              </div>
+
+              <div class="col-md-6 col-sm-12 mb-3" *ngIf="!volunteer">
+                <button mat-button mat-stroked-button style="width: 100%;"
+                        [disabled]="sending" (click)="signUp()">
+                  Cadastrar
                 </button>
               </div>
             </div>

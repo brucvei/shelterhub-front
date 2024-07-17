@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ShelterProvider} from "../../providers/shelter";
 import {MatDialog} from "@angular/material/dialog";
 import {NewShelterComponent} from "./new-shelter/new-shelter.component";
@@ -8,18 +8,21 @@ import {ItemProvider} from "../../providers/item";
 import {CategoryProvider} from "../../providers/category";
 import {MeasurementUnitProvider} from "../../providers/measurement-unit";
 import {NewItemComponent} from "./new-item/new-item.component";
-import {fromEvent, of, Subject, takeUntil} from "rxjs";
+import {of} from "rxjs";
 import {NewCategoryUnitComponent} from "./new-category-unit/new-category-unit.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthService} from "../auth/auth.service";
+import {Chart, ChartConfiguration} from "chart.js";
+import {TransactionsProvider} from "../../providers/transactions";
+import moment from "moment";
+import {NewTransactionComponent} from "./shelter/new-transaction/new-transaction.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class HomeComponent implements OnInit {
 
   loadingShelter = false;
   loadingItens = false;
@@ -29,11 +32,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   itens: any[] = [];
   categories: any[] = [];
   measurementUnits: any[] = [];
+  months = [{nome: 'Jan', numb: 0}, {nome: 'Fev', numb: 1}, {nome: 'Mar', numb: 2}, {
+    nome: 'Abr',
+    numb: 3
+  }, {nome: 'Mai', numb: 4}, {nome: 'Jun', numb: 5}, {nome: 'Jul', numb: 6}, {nome: 'Ago', numb: 7}, {
+    nome: 'Set',
+    numb: 8
+  }, {nome: 'Out', numb: 9}, {nome: 'Nov', numb: 10}, {nome: 'Dez', numb: 11}];
+  select: any = this.months[moment().month()];
+  withoutTranstactions: boolean = false;
 
   constructor(private shelterProvider: ShelterProvider,
               private itemProvider: ItemProvider,
               private categoryProvider: CategoryProvider,
               private measurementProvider: MeasurementUnitProvider,
+              private transactionProvider: TransactionsProvider,
               private router: Router,
               private authService: AuthService,
               readonly snackBar: MatSnackBar,
@@ -44,25 +57,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.snackBar.open('Usuario nao autorizado!', "", {duration: 3000});
       this.router.navigate(['/login']);
     }
-    this.getShelters();
-    this.getItens();
-    this.getCategory();
-    this.getMeasurementUnit();
   }
 
   ngOnInit() {
-    fromEvent(window, 'resize')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        if (this.isMobileDevice()) {
-          console.log('mobile');
-        }
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    if (this.isAdmin()) {
+      this.getShelters();
+      this.getChart();
+    } else if (this.isUser()) {
+      this.getOneShelter();
+    }
+    this.getItens();
+    this.getCategory();
+    this.getMeasurementUnit();
   }
 
   isMobileDevice(): boolean {
@@ -90,6 +96,49 @@ export class HomeComponent implements OnInit, OnDestroy {
         return of([]); // Retorna um Observable vazio para que o fluxo continue
       }
     });
+  }
+
+  getOneShelter() {
+    this.loadingShelter = true;
+    this.shelterProvider.getById('1').subscribe({
+      next: resp => {
+        console.log('shelter', resp);
+        let shelter: Shelter[] = [];
+        if (resp) {
+          resp.forEach((element: any) => {
+            shelter.push(new Shelter(element.id, element.name, element.address, element.items));
+          });
+        }
+        this.shelters = shelter;
+        this.loadingShelter = false;
+      }, error: (error) => {
+        console.error('There was an error during the request', error);
+        this.loadingShelter = false;
+        this.snackBar.open('Não foi possível buscar os abrigos!', "", {duration: 3000});
+        return of([]); // Retorna um Observable vazio para que o fluxo continue
+      }
+    });
+  }
+
+  getChart() {
+    // this.withoutTranstactions = false;
+    // let obj = {
+    //   startDate: moment().month(this.select.numb).startOf('month').format('YYYY-MM-DD'),
+    //   endDate: moment().month(this.select.numb).endOf('month').format('YYYY-MM-DD')
+    // }
+    // this.transactionProvider.getAll(obj).subscribe({
+    //   next: resp => {
+    //     if (resp) {
+    //       this.generateReport(resp);
+    //     } else {
+    //       this.withoutTranstactions = true;
+    //     }
+    //   }, error: (error) => {
+    //     console.error('There was an error during the request', error);
+    //     this.snackBar.open('Não foi possível buscar o gráfico!', "", {duration: 3000});
+    //     return of([]); // Retorna um Observable vazio para que o fluxo continue
+    //   }
+    // });
   }
 
   getItens() {
@@ -185,7 +234,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result === 'ok') {
-         this.snackBar.open('Unidade de medida cadastrada com sucesso!', "", {duration: 3000});
+          this.snackBar.open('Unidade de medida cadastrada com sucesso!', "", {duration: 3000});
           this.getMeasurementUnit();
         }
       }
@@ -201,8 +250,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result === 'ok') {
-         this.snackBar.open('Categoria cadastrada com sucesso!', "", {duration: 3000});
+          this.snackBar.open('Categoria cadastrada com sucesso!', "", {duration: 3000});
           this.getCategory();
+        }
+      }
+    });
+  }
+
+  newTransactionShelter() {
+    const dialogRef = this.dialog.open(NewTransactionComponent, {
+      data: {
+        all: this.itens,
+        transfer: true,
+        shelters: this.shelters
+      },
+    });
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+        if (result === 'ok') {
+          this.snackBar.open('Transação feita com sucesso!', "", {duration: 3000});
         }
       }
     });
@@ -218,7 +284,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result === 'ok') {
-         this.snackBar.open('Abrigo editado com sucesso!', "", {duration: 3000});
+          this.snackBar.open('Abrigo editado com sucesso!', "", {duration: 3000});
           this.getShelters();
         }
       }
@@ -237,7 +303,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result === 'ok') {
-         this.snackBar.open('Item editado com sucesso!', "", {duration: 3000});
+          this.snackBar.open('Item editado com sucesso!', "", {duration: 3000});
           this.getItens();
         }
       }
@@ -256,7 +322,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result === 'ok') {
-         this.snackBar.open('Categoria editada com sucesso!', "", {duration: 3000});
+          this.snackBar.open('Categoria editada com sucesso!', "", {duration: 3000});
           this.getCategory();
         }
       }
@@ -274,7 +340,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: result => {
         if (result === 'ok') {
-         this.snackBar.open('Unidade de medida editada com sucesso!', "", {duration: 3000});
+          this.snackBar.open('Unidade de medida editada com sucesso!', "", {duration: 3000});
           this.getMeasurementUnit();
         }
       }
@@ -285,7 +351,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadingShelter = true;
     this.shelterProvider.delete(id).subscribe({
       next: () => {
-       this.snackBar.open('Abrigo removido com sucesso!', "", {duration: 3000});
+        this.snackBar.open('Abrigo removido com sucesso!', "", {duration: 3000});
         this.getShelters();
         this.loadingShelter = false;
       }
@@ -296,7 +362,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadingItens = true;
     this.itemProvider.delete(id).subscribe({
       next: () => {
-       this.snackBar.open('Item removido com sucesso!', "", {duration: 3000});
+        this.snackBar.open('Item removido com sucesso!', "", {duration: 3000});
         this.getItens();
         this.loadingItens = false;
       }
@@ -307,7 +373,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadingCategories = true;
     this.categoryProvider.delete(id).subscribe({
       next: () => {
-       this.snackBar.open('Categoria removida com sucesso!', "", {duration: 3000});
+        this.snackBar.open('Categoria removida com sucesso!', "", {duration: 3000});
         this.getCategory();
         this.loadingCategories = false;
       }
@@ -318,7 +384,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadingUnits = true;
     this.measurementProvider.delete(id).subscribe({
       next: () => {
-       this.snackBar.open('Unidade de medida removida com sucesso!', "", {duration: 3000});
+        this.snackBar.open('Unidade de medida removida com sucesso!', "", {duration: 3000});
         this.getMeasurementUnit();
         this.loadingUnits = false;
       }
@@ -331,5 +397,118 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isUser() {
     return this.authService.isUser();
+  }
+
+  changeMonth(mes: any) {
+    this.select = this.months.find((element) => element.numb === mes);
+    this.getChart();
+  }
+
+  changeMonth2(s: '-' | '+') {
+    switch (s) {
+      case '+':
+        let index = this.months.findIndex((element) => element.numb === this.select.numb);
+        if (index === 11) {
+          this.select = this.months[0];
+        } else {
+          this.select = this.months[index + 1];
+        }
+        break;
+      case '-':
+        let index2 = this.months.findIndex((element) => element.numb === this.select.numb);
+        if (index2 === 0) {
+          this.select = this.months[11];
+        } else {
+          this.select = this.months[index2 - 1];
+        }
+        break;
+    }
+    this.getChart();
+  }
+
+  private generateReport(resp: any) {
+    // @ts-ignore
+    // @ts-ignore
+
+    let elem1: HTMLCanvasElement = document.getElementById('chart1');
+    if (elem1 == null) return;
+    elem1.style.display = 'block';
+    document.getElementById('chart2');
+    let data = resp;
+    let byTransaction: any = {"OUTPUT": 0, "INPUT": 0}, byItem: any = [], labelsItem: any = [];
+    data.forEach((transaction: any) => {
+      byTransaction[transaction.action] += transaction.quantity;
+      let item = transaction.itemShelter.item
+      if (labelsItem.indexOf(item.name) === -1) {
+        labelsItem.push(item.name);
+      }
+      let index = labelsItem.indexOf(item.name);
+      if (byItem[index] === undefined) {
+        byItem[index] = 0;
+      }
+
+      if (transaction.action == 'OUTPUT') {
+        byItem[index] -= transaction.quantity;
+      } else if (transaction.action == 'INPUT') {
+        byItem[index] += transaction.quantity;
+      }
+
+    });
+    console.log('byTransaction', byTransaction);
+    console.log('byItem', byItem);
+    console.log('labelsItem', labelsItem);
+    // let config: ChartConfiguration = {
+    //   type: 'bar',
+    //   data: {
+    //     labels: ["Entrada", "Saída"],
+    //     datasets: [{
+    //       // labels: ["Entrada", "Saída"],
+    //       label: "AAAAAAAAAaa",
+    //       data: [byTransaction["OUTPUT"], byTransaction["INPUT"]],
+    //     }]
+    //   },
+    //   options: {
+    //     responsive: true,
+    //     scales: {
+    //       y: {
+    //         beginAtZero: true
+    //       }
+    //     },
+    //     plugins: {
+    //       legend: {
+    //         display: false
+    //       },
+    //       tooltip: {
+    //         enabled: false
+    //       }
+    //     }
+    //   }
+    // };
+    //
+    // let chart = new Chart(elem1, config);
+
+    let config2: ChartConfiguration = {
+      type: 'bar',
+      data: {
+        labels: labelsItem,
+        datasets: [{
+          //       // labels: ["Entrada", "Saída"],
+          //       label: "AAAAAAAAAaa",
+          data: byItem,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    let chart2 = new Chart(elem1, config2);
+
   }
 }

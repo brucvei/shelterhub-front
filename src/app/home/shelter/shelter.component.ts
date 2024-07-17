@@ -9,6 +9,8 @@ import {NewItemShelterComponent} from './new-item-shelter/new-item-shelter.compo
 import {ItemProvider} from '../../../providers/item';
 import {NewTransactionComponent} from './new-transaction/new-transaction.component';
 import {AuthService} from "../../auth/auth.service";
+import {ShelterProvider} from "../../../providers/shelter";
+import moment from "moment";
 
 @Component({
   selector: 'app-shelter',
@@ -33,6 +35,7 @@ export class ShelterComponent implements OnInit, OnDestroy {
   }
 
   constructor(private route: ActivatedRoute,
+              private shelterProvider: ShelterProvider,
               private itemProvider: ItemProvider,
               private itemShelterProvider: ItemShelterProvider,
               private transactionProvider: TransactionsProvider,
@@ -42,6 +45,9 @@ export class ShelterComponent implements OnInit, OnDestroy {
               public router: Router) {
     this.shelterId = <string>this.route.snapshot.paramMap.get('id');
 
+    if (this.isVolunteer()) {
+      this.getShelter();
+    }
     this.getItens();
     this.getShelterItens();
     this.getTransactions();
@@ -67,6 +73,16 @@ export class ShelterComponent implements OnInit, OnDestroy {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   }
 
+  getShelter() {
+    this.loading = true;
+    this.shelterProvider.getById(this.shelterId).subscribe({
+      next: resp => {
+        this.shelter = resp;
+        this.loading = false;
+      }
+    });
+  }
+
   getItens() {
     this.loading = true;
     this.itemProvider.get().subscribe({
@@ -80,7 +96,7 @@ export class ShelterComponent implements OnInit, OnDestroy {
   getShelterItens() {
     this.loading = true;
     this.itemShelterProvider.get(this.shelterId).subscribe({
-      next:resp => {
+      next: resp => {
         this.shelterItens = resp;
         console.log('shelterItens', this.shelterItens)
         this.loading = false;
@@ -93,6 +109,7 @@ export class ShelterComponent implements OnInit, OnDestroy {
     this.transactionProvider.get(this.shelterId).subscribe({
       next: resp => {
         this.transactions = resp;
+        console.log('transactions', this.transactions)
         this.loading = false;
       }
     });
@@ -133,18 +150,17 @@ export class ShelterComponent implements OnInit, OnDestroy {
     });
   }
 
-  protected readonly length = length;
 
   formateDate(str: string) {
-      const date = new Date(str);
+    return moment(str).format('DD/MM/YY HH:mm');
+  }
 
-      const day = ("0" + date.getDate()).slice(-2);
-      const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const year = date.getFullYear().toString().slice(-2);
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
+  isAdmin() {
+    return this.authService.isAdmin();
+  }
 
-      return `${day}/${month}/${year} ${hours}:${minutes}`;
+  isFunctionary() {
+    return this.authService.isUser();
   }
 
   isVolunteer() {

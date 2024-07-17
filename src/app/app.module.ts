@@ -59,6 +59,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {TableModule} from "primeng/table";
 import {NgxMaskDirective, provideEnvironmentNgxMask} from "ngx-mask";
 import {JwtInterceptor} from "../interceptor/jwt";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 
 export function HttpLoaderFactory(http: HttpClient)  {
   return new TranslateHttpLoader(http);
@@ -137,6 +138,9 @@ export function HttpLoaderFactory(http: HttpClient)  {
     TableModule,
     NgxMaskDirective,
     MatIconButton,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
   ],
   providers: [
     provideEnvironmentNgxMask(),
